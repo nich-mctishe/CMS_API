@@ -6,6 +6,7 @@ use Exception;
 use Portfolio\Exceptions\SectionNotValidException;
 use Illuminate\Http\Request;
 
+
 class ApiService
 {
     /**
@@ -61,14 +62,15 @@ class ApiService
     public function write($section, Request $request)
     {
         try {
+            $validator = new ValidationService();
+            $validator->runValidation($section, $request);
             $model = $this->setClass($section);
             $saved = $this->runUploadToDb($model, $request);
-
-            return 'data saved!'; //maybe place id and db info in here.
-
-        } catch (Excption $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
+
+        return 'data saved!'; //maybe place id and db info in here.
     }
 
     /**
@@ -84,13 +86,15 @@ class ApiService
     public function update($section, $id, Request $request)
     {
         try {
+            $validator = new ValidationService();
+            $validator->runValidation($section, $request);
             $model = $this->setClass($section);
             $saved = $this->runUploadToDb($model->findOrFail($id), $request);
-
-            return $section.' updated!';
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
+
+        return $section.' updated!';
     }
 
     /**
@@ -107,11 +111,11 @@ class ApiService
         try {
             $model = $this->setClass($section);
             $model->destroy($id);
-
-            return $section.' with id '.$id.' deleted';
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
+
+        return $section.' with id '.$id.' deleted';
     }
 
     /**

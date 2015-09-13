@@ -22,6 +22,6 @@ class CreateProjletsTable extends Migration
      */
     public function down()
     {
-        
+
     }
 }
