@@ -14,55 +14,33 @@
 Route::get('/', function () {
     return view('welcome');
 });
+/**
+ * this route is purely for development purposes
+ */
+Route::get('csrf', function() {
+    return Session::token();
+});
+Route::controllers([
+    //register needs to be before auth
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);
+Route::get('home', ['middleware' => 'auth', 'uses' => 'HandlerController@index']);
 
 Route::group(['prefix' => 'api'], function () {
 
-//    Route::get('{section}/{?id}');
-//
-//    Route::group(['middleware' => 'auth'], function () {
-//        Route::post('{section}');
-//        Route::put('{section}/{id}');
-//        Route::delete('{section}/{id}');
-//    });
+    Route::get('{section}/{id?}', 'ApiController@show');
+
+    //this is temporary, these will need to be before auth.
+    Route::post('{section}/update/{id}', 'ApiController@update');
+    Route::post('{section}', 'ApiController@create');
+    Route::delete('{section}/{id}', 'ApiController@destroy');
+
+    Route::group(['middleware' => 'auth'], function () {
+
+        //Route::delete('{section}/{id}', 'ApiController@destroy');
+    });
 });
 
-// CRUD actions.
-
-//DATABASE TABLES AND APPLICATION THEMES
-//SKILLS
-// belongs to skillCategory
-// id | name | Category | desc
-//skillCategory
-//id | name
-
-//CLIENTS
-//hasOne Image
-//id | name | Desc | Date Started | Date Ended | Role
-
-
-//WORK EXPERIENCE
-//hasOne image
-//id | name | desc
-
-//PROJECTS
-//hasMany Image
-//hasMany skillTags
-//id | title | Desc | moreInfo
-
-//skillTags
-//hasOne skill
-//id | skillId | projectId | projletId
-
-//PROJLETS
-//hasMany Images
-//hasMany skillTags
-//id | title | Desc
-
-//image (could be a video)
-//belongsTo projects
-//belongsTo projlets
-//belongsTo clients
-//belongsTo workExperience
-//id | fileName | folderLoc | parentId | parentSection | local:bool
 
 

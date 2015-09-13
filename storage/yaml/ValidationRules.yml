@@ -1,0 +1,40 @@
+Client:
+    ValidationRules:
+        - {name: name, criteria: required}
+        - {name: description, criteria: required}
+        - {name: dateStarted, criteria: required}
+        - {name: dateEnded, criteria: required}
+        - {name: role, criteria: required}
+Image: #these criteria might have to change as they are porbably server generated.
+    ValidationRules:
+        - {name: fileName, criteria: required}
+        - {name: folderLocation, criteria: required}
+        - {name: parentId, criteria: required}
+        - {name: parentSection, criteria: required}
+        - {name: local, criteria: required}
+Project:
+    ValidationRules:
+        - {name: title, criteria: required}
+        - {name: description, criteria: required}
+        - {name: moreInfo, criteria: required}
+Projlet:
+    ValidationRules:
+        - {name: title, criteria: required}
+        - {name: description, criteria: required}
+Skill:
+    ValidationRules:
+        - {name: name, criteria: required}
+        - {name: desc, criteria: required}
+        - {name: category, criteria: required}
+SkillCategory:
+    ValidationRules:
+        - {name: name, criteria: required}
+SkillTag:
+    ValidationRules:
+        - {name: skillId, criteria: required}
+        - {name: projectId, criteria: required}
+        - {name: projletId, criteria: required}
+WorkExperience:
+    ValidationRules:
+        - {name: name, criteria: required}
+        - {name: description, criteria: required}
