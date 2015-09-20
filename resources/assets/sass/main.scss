@@ -1,0 +1,401 @@
+/* vars */
+
+/* colours */
+$background-colour: #F0F0F0;
+$main-colour: #990000;
+$submain-colour: #009900;
+$supporting-submain-colour-1: #006600;
+$supporting-submain-colour-2: #339933;
+$supporting-submain-colour-3: #669933;
+
+$main-text-colour: #EEEEEE;
+$backup-text-colour: $main-colour;
+$extra-text-colour: black;
+
+$colours: $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2,
+$supporting-submain-colour-3, $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2;
+
+/* fonts */
+
+@font-face {
+  font-family:Reswysokr;
+  src: url("/assets/typeface/reswysokr-webfont.eot");
+  src: local("☺"),
+  url("/assets/typeface/reswysokr-webfont.woff") format("woff"),
+  url("/assets/typeface/reswysokr-webfont.otf") format("opentype"),
+  url("/assets/typeface/reswysokr-webfont.svg#reswysokr-webfont") format("svg");
+}
+
+$head-font-family: Reswysokr, serif;
+$sub-font-family: corbel, helvetica, arial, sans-serif;
+
+/* font sizes */
+
+$h1: 3em;
+$h1-large: 5em;
+$h1-mobile: 2em;
+$h2: 18px;
+$h2-large: 1.5em;
+$h3: 14px;
+$p: 14px;
+$ul-mobile: 1.5em;
+$ul-desktop: 1.3em;
+
+/* lenghts */
+$main-circle-size: 475px;
+$small-circle-size: 100px;
+
+/* mixins */
+
+@mixin mob-a-styles ($size, $colour) {
+  font-size: $size;
+  color: $colour;
+  text-decoration: none;
+}
+
+@mixin transition-handler($element, $length, $easing-type) {
+  -webkit-transition: $element $length $easing-type;
+  -moz-transition: $element $length $easing-type;
+  -o-transition: $element $length $easing-type;
+  transition: $element $length $easing-type;
+}
+/* main sass */
+
+body, html {
+  background: $background-colour;
+  margin: 0;
+  padding: 0;
+}
+nav {
+  font-family: $head-font-family;
+  float: left;
+
+  &.mobile {
+    position: fixed;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    > section.mast {
+      background: $main-colour;
+      padding: 2%;
+      width: 100%;
+      float: left;
+
+      > h1 {
+        width: 75%;
+        float: left;
+        margin: 0;
+        > a {
+          @include mob-a-styles($h1-mobile, $main-text-colour);
+        }
+      }
+      > span.menu {
+        width: 25%;
+        position: relative;
+        padding-left: 4.25em;
+
+        &:before {
+          content: "";
+          margin: 0.3em 0 0 1.6em;
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 3em;
+          height: 0.5em;
+          background: $main-text-colour;
+          box-shadow: 0 0.75em 0 0 $main-text-colour,
+          0 1.5em 0 0 $main-text-colour;
+        }
+      }
+    }
+    &.side-menu {
+      width: 50%;
+      -webkit-transform: translateX(-100%);
+      -moz-transform: translateX(-100%);
+      -o-transform: translateX(-100%);
+      -ms-transform: translateX(-100%);
+      transform: translateX(-100%);
+      height: 100%;
+      position: fixed;
+      z-index: 200;
+      background-color: $submain-colour;
+      opacity: 0.95;
+      &.active {
+        -webkit-transform: translateX(0%);
+        -moz-transform: translateX(0%);
+        -o-transform: translateX(0%);
+        -ms-transform: translateX(0%);
+        transform: translateX(0%);
+        @include transition-handler(transform, 0.3s, linear);
+      }
+      &.disabled {
+        -webkit-transform: translateX(-100%);
+        -moz-transform: translateX(-100%);
+        -o-transform: translateX(-100%);
+        -ms-transform: translateX(-100%);
+        transform: translateX(-100%);
+        @include transition-handler(transform, 0.3s, linear);
+      }
+    }
+    > ul.menu {
+      width: 100%;
+      float: left;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      > li {
+        margin: 0;
+        padding: 2% 0;
+        width: 100%;
+        float: left;
+        text-align: center;
+        > a {
+          display: block;
+          @include mob-a-styles($ul-mobile, $main-text-colour);
+        }
+      }
+    }
+    > button {
+      width: 100%;
+      font-size: $ul-mobile;
+      font-family: $head-font-family;
+      color: $main-text-colour;
+      margin: 0;
+      padding: 2% 0;
+      float: left;
+      border: 0;
+      background: $main-colour;
+      &::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+      }
+    }
+    @for $i from 1 through length($colours) {
+      li:nth-child(#{length($colours)}n+#{$i}) {
+        background: nth($colours, $i)
+      }
+    }
+    > li:has(a:active) {
+      background: $main-colour;
+    }
+  }
+
+  &.desktop {
+    width: 600px;
+    height: 720px;
+    margin: 10px 0 0 0;
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    transform: translateX(-100%);
+
+    &.initial {
+      -webkit-transform: translateX(-14%);
+      -moz-transform: translateX(-14%);
+      -o-transform: translateX(-14%);
+      -ms-transform: translateX(-14%);
+      transform: translateX(-14%);
+      @include transition-handler(transform, 0.75s, ease-out);
+    }
+    >.mainCircle {
+      position: relative;
+      width: $main-circle-size;
+      height: $main-circle-size;
+      margin: 121px 0;
+      background: $main-colour;
+      border-radius: ($main-circle-size / 2);
+      transition: background 0.2s ease-out;
+      &:hover {
+        background: $supporting-submain-colour-3;
+        @include transition-handler(background, 0.2s, ease-in);
+      }
+      > h1, h2 {
+        padding:0 0 0 28%;
+        margin: 0;
+        font-weight: 100;
+      }
+      > h1 {
+        font-size: $h1-large;
+        margin-top: -5.2%;
+      }
+      > h2 {
+        font-size: $h2-large;
+        margin: -4% 0 0 0.7%;
+      }
+      >h1:first-of-type {
+        padding-top: 25%;
+        margin-top: 0;
+      }
+    }
+    h1,h2,a {
+      color: $main-text-colour;
+    }
+    >.mainMenu {
+      list-style-type: none;
+      position: absolute;
+      top: 300px;
+      left: 207px;
+      padding: 0;
+      -webkit-transform: rotate(-180deg);
+      -moz-transform: rotate(-180deg);
+      -o-transform: rotate(-180deg);
+      -ms-transform: rotate(-180deg);
+      transform: rotate(-180deg);
+
+      &.initial {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+        @include transition-handler(transform, 0.9s, ease-out)
+      }
+      >li {
+        position: absolute;
+        width: $small-circle-size;
+        height: $small-circle-size;
+        border-radius: 50px;
+
+        $rot: 0;
+        $circles: 7;
+        $final-angle: 180;
+        $increment: $final-angle / $circles;
+        @for $i from 1 to $circles+1 {
+          &:nth-of-type(#{$i}) {
+            @if($i < (4)) {
+              -webkit-transform:
+                rotate(#{$rot}deg)       /* Rotate the axis */
+                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
+                translateX(($rot / 100) * 100% ) /* Move the item from the center */
+                rotate(-#{$rot}deg);     /* Rotate the item back to its default position */
+              -moz-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -o-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -ms-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+            } @elseif($i > (3) and $i < (6)) {
+              -webkit-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -moz-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -o-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -ms-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+            } @else {
+              -webkit-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -moz-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -o-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              -ms-transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+              transform:
+                rotate(#{$rot}deg)
+                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
+                translateX(($rot / 100) * 100% )
+                rotate(-#{$rot}deg);
+            }
+          }
+
+          $rot: $rot + $increment; /* Increments the $rot variable for next item */
+        }
+        >a {
+          display: block;
+          text-decoration: none;
+          text-align: center;
+          font-size: $ul-desktop;
+          font-weight: 100;
+          padding-top: 38%;
+          &.double-line {
+            padding-top: 21%;
+          }
+        }
+      }
+      @for $i from 1 through length($colours) {
+        li:nth-child(#{length($colours)}n+#{$i}) {
+          background: nth($colours, $i);
+          @include transition-handler(background, 0.2s, ease-out);
+        }
+      }
+      >li:hover {
+        background: $main-colour;
+        @include transition-handler(background, 0.2s, ease-in);
+      }
+    }
+  }
+}
+section.about {
+  float: left;
+  @media screen and (min-width: 1000px) {
+    float: left;
+    max-width: 600px;
+    width: 40%;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 90%;
+    padding: 0;
+    margin: 2% 5%;
+  }
+  @media screen and (max-width: 600px) {
+    width: 90%;
+    padding: 0;
+    margin: 16% 2% 2% 5%;
+  }
+  > p {
+    font-family: $head-font-family;
+    color: #000;
+    font-size: $p;
+  }
+}
+
+section.skills {
+  margin: 0 auto;
+}
