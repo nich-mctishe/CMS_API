@@ -12,6 +12,11 @@ class SkillCategory extends Model
 
     public function skills()
     {
-        return $this->hasMany('Skill');
+        return $this->hasMany('Portfolio\Models\Skill', 'category', 'name');
+    }
+
+    public function withDependencies()
+    {
+        return $this->with('skills');
     }
 }

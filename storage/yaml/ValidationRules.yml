@@ -24,7 +24,7 @@ Projlet:
 Skill:
     ValidationRules:
         - {name: name, criteria: required}
-        - {name: desc, criteria: required}
+        - {name: desc, criteria: ''}
         - {name: category, criteria: required}
 SkillCategory:
     ValidationRules:

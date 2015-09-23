@@ -32,8 +32,10 @@ class ValidationService
     /**
      * Run Validation
      *
-     * @param $requestData
+     * @param $section
+     * @param Request $request
      *
+     * @throws ValidationException
      */
     public function runValidation($section, Request $request)
     {
@@ -44,6 +46,28 @@ class ValidationService
             throw new ValidationException($validation->errors()->toJson(), 402);
         }
         //the validate function takes a third optional input of error messages that could be tailored to the api.
+    }
+
+    /**
+     * Run Validation From Array
+     *
+     * @param $section
+     * @param $array
+     *
+     * @throws ValidationException
+     */
+    public function runValidationFromArray($section, $array)
+    {
+        $rules = $this->getValidationRules($section);
+
+        foreach ($array as $entry) {
+            $validation = Validator::make($entry, $rules);
+
+            if ($validation->fails()) {
+
+                throw new ValidationException($validation->errors()->toJson(), 402);
+            }
+        }
     }
 
     /**

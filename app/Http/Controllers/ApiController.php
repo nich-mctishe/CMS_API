@@ -33,7 +33,7 @@ class ApiController extends Controller
      */
     public function create($section, Request $request)
     {
-        $requestData = ['section' => $section, 'request' => $request, 'referrerMethod' => 'create'];
+        $requestData = ['section' => $section, 'request' => $request, 'referrerMethod' => 'write'];
 
         return $this->runRequest($requestData);
     }

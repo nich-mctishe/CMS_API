@@ -18,7 +18,7 @@
 @else
     @include('nav.navDesktop')
 @endif
-<section class="content" data-ui-view="content">
+<section class="content" data-ui-view>
 
 </section>
 

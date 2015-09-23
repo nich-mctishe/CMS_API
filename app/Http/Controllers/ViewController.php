@@ -18,10 +18,13 @@ class ViewController extends Controller {
         ];
     }
 
-    public function index() {
-
-        return view('main', $this->data);
+    public function index($routeSuffix)
+    {
+        return view('content.'.$routeSuffix, $this->data);
     }
 
-
+    public function runHome()
+    {
+        return view('main', $this->data);
+    }
 }

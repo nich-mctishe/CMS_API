@@ -39,7 +39,7 @@ module.exports = function(grunt) {
     concat: {
       options: {
         // define a string to put between each file in the concatenated output
-        separator: ';'
+        separator: ' '
       },
       javascript: {
         // the files to concatenate
@@ -69,7 +69,7 @@ module.exports = function(grunt) {
         tasks: ['sass', 'cssmin']
       },
       js: {
-        files: ['<%= dirs.dev.js %>/libraries/*.js', '<%= dirs.dev.js %>/*.js', '<%= dirs.dev.js %>/factories/*.js', '<%= dirs.dev.js %>/services/*.js', '<%= dirs.dev.js %>/controllers/*.js'],
+        files: ['<%= dirs.dev.js %>/libraries/*.js', '<%= dirs.dev.js %>/*.js', '<%= dirs.dev.js %>/directives/*.js', '<%= dirs.dev.js %>/factories/*.js', '<%= dirs.dev.js %>/services/*.js', '<%= dirs.dev.js %>/controllers/*.js'],
         tasks: ['concat', 'uglify']
       },
       tasks: ['default']

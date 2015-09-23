@@ -40,10 +40,13 @@ class ApiService
 
         try {
             if ($id == null) {
-                return $model->all();
+                return $model->withDependencies()->get();
             }
 
-            return $model->where('id', '=', $id)->get();
+            return $model
+                ->where('id', '=', $id)
+                ->withDependencies()
+                ->get();
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
@@ -70,7 +73,7 @@ class ApiService
             throw new Exception($e->getMessage(), $e->getCode());
         }
 
-        return 'data saved!'; //maybe place id and db info in here.
+        return $saved; //maybe place id and db info in here.
     }
 
     /**
@@ -94,7 +97,7 @@ class ApiService
             throw new Exception($e->getMessage(), $e->getCode());
         }
 
-        return $section.' updated!';
+        return $saved;
     }
 
     /**
@@ -158,8 +161,14 @@ class ApiService
                     //save to dependants array with the name of the dependant;
                     $dependants[$key] = $value;
                     break;
+                case $key == 'skills':
+                    $dependants[$key] = $value;
+                    //remember that the foreign key is a word not an id, and that it doesnt end in ID.
+                    //foreign key is category. could run this througha a swicth.
+                    break;
                 default:
-                    if ($key != 'CSRF-TOKEN') {
+                    if ($key != 'CSRF-TOKEN' && $key != 'id' && $key != '$$hashKey'
+                        && $key != 'created_at' && $key != 'updated_at') {
                         $model->$key = $value;
                     }
                     break;
@@ -167,12 +176,20 @@ class ApiService
         }
         $model->save();
         if (count($dependants) > 0) {
-            $dependancyIdName = $className.'Id';
+            $dependencyIdName = $className.'Id';
+            $validator = new ValidationService();
             foreach ($dependants as $dependant => $data) {
+                $validator->runValidationFromArray(ucfirst(str_singular($dependant)), $data);
                 foreach($data as $key => $value) {
-                    $model->$dependant()->$key = $value;
+                    if ($key != 'id' && $key != '$$hashKey'
+                        && $key != 'created_at' && $key != 'updated_at') {
+                        $model->$dependant()->$key = $value;
+                    }
                 }
-                $model->$dependant()->$dependancyIdName = $model->id;
+
+                if (!array_key_exists('skills', $dependants)) {
+                    $model->$dependant()->$dependencyIdName = $model->id;
+                }
                 $model->$dependant()->save();
             }
         }

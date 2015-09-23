@@ -34,9 +34,9 @@ $sub-font-family: corbel, helvetica, arial, sans-serif;
 $h1: 3em;
 $h1-large: 5em;
 $h1-mobile: 2em;
-$h2: 18px;
-$h2-large: 1.5em;
-$h3: 14px;
+$h2: 1.7em;
+$h2-large: 2em;
+$h3:18px;
 $p: 14px;
 $ul-mobile: 1.5em;
 $ul-desktop: 1.3em;
@@ -58,6 +58,22 @@ $small-circle-size: 100px;
   -moz-transition: $element $length $easing-type;
   -o-transition: $element $length $easing-type;
   transition: $element $length $easing-type;
+}
+
+@mixin handle-translateX-transformation($value) {
+  -webkit-transform: translateX($value);
+  -moz-transform: translateX($value);
+  -o-transform: translateX($value);
+  -ms-transform: translateX($value);
+  transform: translateX($value);
+}
+
+@mixin handle-rotation-transformation($value) {
+  -webkit-transform: rotate($value);
+  -moz-transform: rotate($value);
+  -o-transform: rotate($value);
+  -ms-transform: rotate($value);
+  transform: rotate($value);
 }
 /* main sass */
 
@@ -109,32 +125,44 @@ nav {
         }
       }
     }
+    >div.overlay {
+      visibility: hidden;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      background: $extra-text-colour;
+      z-index: 100;
+      &.active {
+        visibility: visible;
+        opacity: 0.6;
+        z-index: 100;
+      }
+      &.disabled {
+        visibility: visible;
+        opacity: 0;
+        z-index: -100;
+        width: 0;
+        height: 0;
+      }
+      &.active, &.disabled {@include transition-handler(opacity, 0.25s, linear);}
+    }
     &.side-menu {
       width: 50%;
-      -webkit-transform: translateX(-100%);
-      -moz-transform: translateX(-100%);
-      -o-transform: translateX(-100%);
-      -ms-transform: translateX(-100%);
-      transform: translateX(-100%);
+      @include handle-translateX-transformation(-100%);
       height: 100%;
       position: fixed;
       z-index: 200;
       background-color: $submain-colour;
       opacity: 0.95;
       &.active {
-        -webkit-transform: translateX(0%);
-        -moz-transform: translateX(0%);
-        -o-transform: translateX(0%);
-        -ms-transform: translateX(0%);
-        transform: translateX(0%);
+        @include handle-translateX-transformation(0%);
         @include transition-handler(transform, 0.3s, linear);
       }
       &.disabled {
-        -webkit-transform: translateX(-100%);
-        -moz-transform: translateX(-100%);
-        -o-transform: translateX(-100%);
-        -ms-transform: translateX(-100%);
-        transform: translateX(-100%);
+        @include handle-translateX-transformation(-100%);
         @include transition-handler(transform, 0.3s, linear);
       }
     }
@@ -185,18 +213,10 @@ nav {
     width: 600px;
     height: 720px;
     margin: 10px 0 0 0;
-    -webkit-transform: translateX(-100%);
-    -moz-transform: translateX(-100%);
-    -o-transform: translateX(-100%);
-    -ms-transform: translateX(-100%);
-    transform: translateX(-100%);
+    @include handle-translateX-transformation(-100%);
 
     &.initial {
-      -webkit-transform: translateX(-14%);
-      -moz-transform: translateX(-14%);
-      -o-transform: translateX(-14%);
-      -ms-transform: translateX(-14%);
-      transform: translateX(-14%);
+      @include handle-translateX-transformation(-14%);
       @include transition-handler(transform, 0.75s, ease-out);
     }
     >.mainCircle {
@@ -211,22 +231,25 @@ nav {
         background: $supporting-submain-colour-3;
         @include transition-handler(background, 0.2s, ease-in);
       }
-      > h1, h2 {
-        padding:0 0 0 28%;
-        margin: 0;
-        font-weight: 100;
-      }
-      > h1 {
-        font-size: $h1-large;
-        margin-top: -5.2%;
-      }
-      > h2 {
-        font-size: $h2-large;
-        margin: -4% 0 0 0.7%;
-      }
-      >h1:first-of-type {
-        padding-top: 25%;
-        margin-top: 0;
+      > a {
+        text-decoration: none;
+        > h1, h2 {
+          padding:0 0 0 28%;
+          margin: 0;
+          font-weight: 100;
+        }
+        > h1 {
+          font-size: $h1-large;
+          margin-top: -5.2%;
+        }
+        > h2 {
+          font-size: $h2;
+          margin: -4% 0 0 0.7%;
+        }
+        >h1:first-of-type {
+          padding-top: 25%;
+          margin-top: 0;
+        }
       }
     }
     h1,h2,a {
@@ -238,18 +261,10 @@ nav {
       top: 300px;
       left: 207px;
       padding: 0;
-      -webkit-transform: rotate(-180deg);
-      -moz-transform: rotate(-180deg);
-      -o-transform: rotate(-180deg);
-      -ms-transform: rotate(-180deg);
-      transform: rotate(-180deg);
+      @include handle-rotation-transformation(-180deg);
 
       &.initial {
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
+        @include handle-rotation-transformation(0deg);
         @include transition-handler(transform, 0.9s, ease-out)
       }
       >li {
@@ -372,30 +387,159 @@ nav {
     }
   }
 }
-section.about {
+section.content {
   float: left;
-  @media screen and (min-width: 1000px) {
-    float: left;
-    max-width: 600px;
-    width: 40%;
-  }
-  @media screen and (max-width: 1000px) {
-    width: 90%;
-    padding: 0;
-    margin: 2% 5%;
-  }
+  width: 96%;
+
   @media screen and (max-width: 600px) {
-    width: 90%;
-    padding: 0;
     margin: 16% 2% 2% 5%;
+
+    form {
+      font-family: $head-font-family;
+      width: 100%;
+      >input {
+        margin: 2% 0;
+        float: left;
+        width: 98%;
+        height: 25px;
+      }
+      >input[type=submit] {
+        background: $submain-colour;
+        color: $main-text-colour;
+        border: none;
+        width: 100%;
+      }
+    }
   }
-  > p {
+
+  form {
+    float: left;
+    overflow: hidden;
+    max-height: 0;
+    &.active {
+      max-height: 300px;
+      @include transition-handler(max-height, 0.25s, linear);
+    }
+    &.disabled {
+      max-height: 0;
+      @include transition-handler(max-height, 0.25s, linear);
+    }
+
+    > input {
+      float: left;
+
+      &.hide {
+        display: none;
+      }
+    }
+  }
+
+  button {
+    margin: 4% 0 0 0;
+    padding: 0 2%;
+    background: $main-colour;
     font-family: $head-font-family;
-    color: #000;
-    font-size: $p;
+    color: $main-text-colour;
+    font-size: $h1-mobile;
+    border: none;
+    outline: none;
+  }
+
+  ul {
+    font-family: $head-font-family;
+    list-style-type: none;
+  }
+
+  > section.about {
+    float: left;
+    @media screen and (min-width: 1000px) {
+      float: left;
+      max-width: 600px;
+      width: 40%;
+    }
+    @media screen and (max-width: 1000px) {
+      width: 90%;
+      padding: 0;
+      margin: 2% 5%;
+    }
+    @media screen and (max-width: 600px) {
+      width: 96%;
+      padding: 0;
+      margin: 0;
+    }
+    > p {
+      font-family: $sub-font-family;
+      font-weight: 200;
+      color: $extra-text-colour;
+      font-size: $p;
+    }
   }
 }
 
-section.skills {
+section.content.skills {
   margin: 0 auto;
+
+  > ul {
+    padding: 0;
+    width: 100%;
+    float: left;
+    > li {
+      color: $extra-text-colour;
+      font-size: $h3;
+
+      > ul.sublist {
+        padding: 0 0 0 5%;
+        margin: 0;
+        list-style-type: disc;
+        font-family: $sub-font-family;
+        width: 100%;
+        float: left;
+        > li {
+          margin: 1% 0;
+          width: 100%;
+          float: left;
+          >h3 {
+            width: 100%;
+            float: right;
+            font-size: $h3;
+            margin: 0;
+            &.short {
+              width: 75%;
+              float: right;
+              margin: -6% 0 0 0;
+            }
+            > span {
+              font-size: $h3;
+              font-weight: 200;
+            }
+          }
+        }
+      }
+      > h3 {
+        font-size: $ul-mobile;
+        color: $main-colour;
+        padding: 0;
+        margin: 0;
+      }
+      h3.short {
+        width: 75%;
+        float: right;
+      }
+      ul.toolbar {
+        list-style-type: none;
+        cursor: pointer;
+        float: right;
+        width: 25%;
+        margin: 0;
+        padding: 0;
+        > li {
+          float: left;
+          margin: 0 0 0 10%;
+          &:first-of-type {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
 }

@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'ViewController@index');
+Route::get('/', 'ViewController@runHome');
 Route::controllers([
     //register needs to be before auth
     'auth' => 'Auth\AuthController',
@@ -20,21 +20,24 @@ Route::controllers([
 Route::get('home', ['middleware' => 'auth', 'uses' => 'HandlerController@index']);
 Route::group(['prefix' => 'route-master'], function ()
 {
+    Route::get('{routeSuffix}', 'ViewController@index');
 
 });
 Route::group(['prefix' => 'api'], function ()
 {
     Route::get('{section}/{id?}', 'ApiController@show');
+    Route::post('{section}/update/{id}', 'ApiController@update');
+    Route::post('{section}', 'ApiController@create');
+
 
     Route::group(['middleware' => 'auth'], function () {
         //these may need to be out of before auth if further postman testing is required.
-        Route::post('{section}/update/{id}', 'ApiController@update');
-        Route::post('{section}', 'ApiController@create');
+
         Route::delete('{section}/{id}', 'ApiController@destroy');
     });
 });
 /**
- * this route is purely for development purposes
+ * this route is purely for development purposes remove before deployment.
  */
 Route::get('csrf', function()
 {

@@ -12,6 +12,6 @@ class Skill extends Model
 
     public function skillCategory()
     {
-        $this->belongsTo('SkillCategory');
+        $this->belongsTo('SkillCategory', 'name', 'category');
     }
 }
