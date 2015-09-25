@@ -1,4 +1,4 @@
-var portfolio = angular.module('portfolio', ['ui.router', 'ngSanitize']);
+var portfolio = angular.module('portfolio', ['ui.router', 'ngSanitize', 'ngFileUpload']);
 
 portfolio.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
 
@@ -11,11 +11,11 @@ portfolio.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
     }).state('projects', {
         url: '/projects',
         controller: 'ProjectsController',
-        templateUrl: baseUrl + 'skills'
+        templateUrl: baseUrl + 'projects'
     }).state('projlets', {
         url: '/projlets',
         controller: 'ProjectsController',
-        templateUrl: baseUrl + 'skills'
+        templateUrl: baseUrl + 'projlets'
     }).state('skills', {
         url: '/skills',
         controller: 'SkillController',

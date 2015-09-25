@@ -25,7 +25,7 @@ Skill:
     ValidationRules:
         - {name: name, criteria: required}
         - {name: desc, criteria: ''}
-        - {name: category, criteria: required}
+        - {name: categoryId, criteria: required|integer}
 SkillCategory:
     ValidationRules:
         - {name: name, criteria: required}

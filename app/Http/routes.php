@@ -28,12 +28,12 @@ Route::group(['prefix' => 'api'], function ()
     Route::get('{section}/{id?}', 'ApiController@show');
     Route::post('{section}/update/{id}', 'ApiController@update');
     Route::post('{section}', 'ApiController@create');
-
+    Route::delete('{section}/{id}', 'ApiController@destroy');
 
     Route::group(['middleware' => 'auth'], function () {
         //these may need to be out of before auth if further postman testing is required.
 
-        Route::delete('{section}/{id}', 'ApiController@destroy');
+
     });
 });
 /**

@@ -12,7 +12,7 @@ class SkillCategory extends Model
 
     public function skills()
     {
-        return $this->hasMany('Portfolio\Models\Skill', 'category', 'name');
+        return $this->hasMany('Portfolio\Models\Skill', 'categoryId', 'id');
     }
 
     public function withDependencies()

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjletsTable extends Migration
+class UpdateSkillTableNewCategoryAsId extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,10 @@ class CreateProjletsTable extends Migration
      */
     public function up()
     {
-
+        Schema::table('skills', function ($table) {
+            $table->dropColumn('category');
+            $table->integer('categoryId')->default(1);
+        });
     }
 
     /**
@@ -22,6 +25,6 @@ class CreateProjletsTable extends Migration
      */
     public function down()
     {
-
+        //
     }
 }

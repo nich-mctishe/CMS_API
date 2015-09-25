@@ -11,13 +11,13 @@
         <li>
             @if (Auth::Check())
                 <ul class="toolbar">
-                    <li data-ng-click="updateCategorySelected=!updateCategorySelected">edit</li>
+                    <li data-ng-click="updateCategorySelected=!updateCategorySelected; formatUpdateForm('skillCategory', this)">edit</li>
                     <li data-ng-click="delete('skillCategory', $index ,category.id)">delete</li>
                 </ul>
                 <h3 class="short" data-ng-show="!updateCategorySelected">@{{ category.name }}:</h3>
                 <form name="updateSkillCategoryForm" data-ng-class="(updateCategorySelected) ? 'active' : 'disabled'"
-                      data-ng-submit="update('skillCategory', this, category)" novalidate>
-                    <input type="text" name="name" data-ng-model="category.name" placeholder="Name..."/>
+                      data-ng-submit="update('skillCategory', this, this.updateCategory)" novalidate>
+                    <input type="text" name="name" data-ng-model="this.updateCategory.name" placeholder="Name..." value="backend"/>
                     <input type="submit" value="Save"/>
                 </form>
             @else
@@ -27,12 +27,12 @@
                 <li data-ng-repeat="skill in category.skills">
                     @if (Auth::check())
                         <ul class="toolbar">
-                            <li data-ng-click="updateSkillSelected=!updateSkillSelected">edit</li>
+                            <li data-ng-click="updateSkillSelected=!updateSkillSelected; formatUpdateForm('skill', this)">edit</li>
                             <li data-ng-click="delete('skill', $index ,skill.id, $parent.$index)">delete</li>
                         </ul>
-                        <form name="updateSkillDataForm" data-ng-class="(updateSkillSelected) ? 'active' : 'disabled'" data-ng-submit="update('skill', this)" novalidate>
-                            <input type="text" name="name" data-ng-model="skill.name" placeholder="Name..." data-ng-value="skill.name" />
-                            <input type="text" name="desc" data-ng-model="skill.desc" placeholder="Short Description..." data-ng-value="skill.desc" />
+                        <form name="updateSkillDataForm" data-ng-class="(updateSkillSelected) ? 'active' : 'disabled'" data-ng-submit="update('skill', this, this.updateSkill)" novalidate>
+                            <input type="text" name="name" data-ng-model="this.updateSkill.name" placeholder="Name..." data-ng-value="this.skill.name" />
+                            <input type="text" name="desc" data-ng-model="this.updateSkill.desc" placeholder="Short Description..." data-ng-value="this.skill.desc" />
                             <input type="submit" value="Save"/>
                         </form>
                         <h3 class="short" data-ng-show="!updateSkillSelected">@{{ skill.name }} <span data-ng-if="skill.desc.length > 0">(@{{ skill.desc }})</span></h3>

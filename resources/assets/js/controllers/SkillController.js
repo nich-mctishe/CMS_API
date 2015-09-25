@@ -2,11 +2,12 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
     function($scope, $http, dataService, ajaxService)
 {
     $scope.skillCategory = [];
-    $scope.currentCategoryNames = [];
     $scope.newSkill = false;
     $scope.newCategory = false;
     $scope.category = {};
+    $scope.updateCategory = {};
     $scope.skillData = {};
+    $scope.updateSkill = {};
     $scope.updateSkillData = {};
     $scope.updateSkillSelected = false;
     $scope.updateCategorySelected = false;
@@ -16,19 +17,11 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
 
     $scope.save = function(form, category, newData, parentIndex, watch)
     {
-        switch (category) {
-            case 'skill':
-                var url = skillUrl;
-                newData.category = $scope.skillCategory[parentIndex].name;
-                break;
-            case 'skillCategory':
-                var url = catUrl;
-                break;
+        if (category == 'skill') {
+            newData.categoryId = $scope.skillCategory[parentIndex].id;
         }
-        var data = {
-            url: url,
-            data: newData
-        };
+        var url = $scope.determineUrlRequired(category);
+        var data = $scope.setData(url, newData);
 
         ajaxService.post(data).then(function(returnedData) {
             if (returnedData.status == 200) {
@@ -41,13 +34,10 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
                     case 'skillCategory':
                         $scope.newCategory = false;
                         $scope.skillCategory.push(returnedData.data);
-                        $scope.currentCategoryNames.push(returnedData.data.name);
                         $scope.category = {};
                         break;
                 }
-                form.$setPristine();
-                form.$setUntouched();
-                form.$rollbackViewValue();
+                $scope.resetForm(form);
             } else {
                 alert('something went wrong, failed with code: '+returnedData.status);
             }
@@ -56,11 +46,7 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
 
     $scope.delete = function(category, key, id, parentIndex)
     {
-        if (category == 'skill') {
-            var url = skillUrl;
-        } else {
-            var url = catUrl;
-        }
+        var url = $scope.determineUrlRequired(category);
 
         ajaxService.delete(url + '/' + id).then(function(returnedData) {
            if (returnedData.status == 200) {
@@ -68,7 +54,6 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
                    $scope.skillCategory[parentIndex].skills.splice(key, 1);
                 } else if(category == 'skillCategory') {
                     $scope.skillCategory.splice(key, 1);
-                    $scope.currentCategoryNames.splice(key, 1);
                 }
            } else {
                alert('something went wrong, failed with code: '+returnedData.status);
@@ -79,38 +64,41 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
     $scope.update = function(category, instance, data)
     {
         if (category == 'skill') {
-            var url = skillUrl;
-        } else {
-            var url = catUrl;
+            data.id = instance.skill.id;
+            data.categoryId = instance.$parent.category.id;
+        } else if (category == 'skillCategory') {
+            data.id = instance.category.id;
         }
-
-        var data = {
-            'url' : url,
-            'data': data
-        };
+        var url = $scope.determineUrlRequired(category);
+        var data = $scope.setData(url, data);
 
         ajaxService.update(data).then(function(returnedData) {
-            if (returnedData.status == 200 && returnedData.data.length > 0) {
+            if (returnedData.status == 200) {
                 switch (category) {
                     case 'skill':
                         $scope.skillCategory[instance.$parent.$index].skills[instance.$index] = returnedData.data;
                         instance.updateSkillSelected = false;
-                        instance.updateSkillDataForm.$setPristine();
-                        instance.updateSkillDataForm.$setUntouched();
-                        instance.updateSkillDataForm.$rollbackViewValue();
+                        $scope.updateSkill = {};
+                        $scope.resetForm(instance.updateSkillDataForm);
                         break;
                     case 'skillCategory':
                         instance.updateCategorySelected = false;
-                        $scope.skillCategory[instance.$index] = returnedData.data;
-                        $scope.currentCategoryNames[instance.$index] = returnedData.data.name;
-                        $scope.category = {};
-                        instance.updateSkillCategoryForm.$setPristine();
-                        instance.updateSkillCategoryForm.$setUntouched();
-                        instance.updateSkillCategoryForm.$rollbackViewValue();
+                        $scope.skillCategory[instance.$index].name = returnedData.data.name;
+                        $scope.updateCategory = {};
+                        $scope.resetForm(instance.updateSkillCategoryForm);
                         break;
-                };
+                }
             }
         });
+    };
+
+    $scope.formatUpdateForm = function(category, data) {
+        if (category == 'skillCategory') {
+            data.updateCategory.name = data.category.name;
+        } else {
+            data.updateSkill.name = data.skill.name;
+            data.updateSkill.desc = data.skill.desc;
+        }
     };
 
     $scope.getSkills = function()
@@ -118,13 +106,34 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
         ajaxService.get(catUrl).then(function(returnedData) {
             if (returnedData.status == 200 && returnedData.data.length > 0) {
                 $scope.skillCategory = returnedData.data;
-                $scope.skillCategory.forEach(function(entry){
-                    $scope.currentCategoryNames.push(entry.name);
-                });
             }
         });
     };
 
     $scope.getSkills();
+
+    $scope.resetForm = function(form)
+    {
+        form.$setPristine();
+        form.$setUntouched();
+        form.$rollbackViewValue();
+    };
+
+    $scope.setData = function(url, data)
+    {
+        return {
+            'url': url,
+            'data': data
+        };
+    }
+
+    $scope.determineUrlRequired = function(category)
+    {
+        if (category == 'skill') {
+            return skillUrl;
+        }
+
+        return catUrl;
+    }
 
 }]);

@@ -47,8 +47,11 @@ class ApiService
                 ->where('id', '=', $id)
                 ->withDependencies()
                 ->get();
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage(), $e->getCode());
+        } catch (\Exception $e) {
+            if (gettype($e->getCode()) == 'string') {
+                throw new \Exception($e->getMessage(), 400);
+            }
+            throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
 
@@ -69,8 +72,11 @@ class ApiService
             $validator->runValidation($section, $request);
             $model = $this->setClass($section);
             $saved = $this->runUploadToDb($model, $request);
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage(), $e->getCode());
+        } catch (\Exception $e) {
+            if (gettype($e->getCode()) == 'string') {
+                throw new \Exception($e->getMessage(), 400);
+            }
+            throw new \Exception($e->getMessage(), $e->getCode());
         }
 
         return $saved; //maybe place id and db info in here.
@@ -94,6 +100,9 @@ class ApiService
             $model = $this->setClass($section);
             $saved = $this->runUploadToDb($model->findOrFail($id), $request);
         } catch (Exception $e) {
+            if (gettype($e->getCode()) == 'string') {
+                throw new \Exception($e->getMessage(), 400);
+            }
             throw new Exception($e->getMessage(), $e->getCode());
         }
 
@@ -115,6 +124,9 @@ class ApiService
             $model = $this->setClass($section);
             $model->destroy($id);
         } catch (Exception $e) {
+            if (gettype($e->getCode()) == 'string') {
+                throw new \Exception($e->getMessage(), 400);
+            }
             throw new Exception($e->getMessage(), $e->getCode());
         }
 
@@ -163,8 +175,6 @@ class ApiService
                     break;
                 case $key == 'skills':
                     $dependants[$key] = $value;
-                    //remember that the foreign key is a word not an id, and that it doesnt end in ID.
-                    //foreign key is category. could run this througha a swicth.
                     break;
                 default:
                     if ($key != 'CSRF-TOKEN' && $key != 'id' && $key != '$$hashKey'
@@ -186,10 +196,7 @@ class ApiService
                         $model->$dependant()->$key = $value;
                     }
                 }
-
-                if (!array_key_exists('skills', $dependants)) {
-                    $model->$dependant()->$dependencyIdName = $model->id;
-                }
+                $model->$dependant()->$dependencyIdName = $model->id;
                 $model->$dependant()->save();
             }
         }

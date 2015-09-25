@@ -4,7 +4,7 @@ portfolio.service('ajaxService', ['$http', function($http) {
     var buildPostData = function(data) {
         data.method = 'POST';
         data.headers = {
-            'Content-Type': 'application/json',
+            'Content-Type': 'undefined',
             "X-CSRF-TOKEN": CSRF_TOKEN
         };
 
