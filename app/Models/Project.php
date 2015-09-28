@@ -12,11 +12,26 @@ class Project extends Model
 
     public function images()
     {
-        return $this->hasMany('Image');
+        return $this->hasMany('Portfolio\Models\Image', 'parentId', 'id')->where('parentSection', '=', 'project');
     }
 
     public function skillTags()
     {
-        return $this->hasMany('SkillTag');
+        return $this->hasMany('Portfolio\Models\SkillTag', 'projectId', 'id');
+    }
+
+    public function withDependencies()
+    {
+        return $this->with(['images', 'skillTags']);
+    }
+
+    // this is a recommended way to declare event handlers <-- check if this works.
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($project) { // before delete() method call this
+            $project->images()->delete();
+            $project->skillTags()->delete();
+        });
     }
 }

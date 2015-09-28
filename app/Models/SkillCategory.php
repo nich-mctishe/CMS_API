@@ -19,4 +19,13 @@ class SkillCategory extends Model
     {
         return $this->with('skills');
     }
+
+    // this is a recommended way to declare event handlers <-- check if this works.
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($skillCategory) { // before delete() method call this
+            $skillCategory->skills()->delete();
+        });
+    }
 }

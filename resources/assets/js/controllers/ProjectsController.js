@@ -1,9 +1,12 @@
-portfolio.controller('ProjectsController', ['$scope', 'Upload', 'ajaxService', 'formatService',
-    function($scope, Upload, ajaxService, formatService)
+portfolio.controller('ProjectsController', ['$scope', 'ajaxService', 'formatService',
+    function($scope, ajaxService, formatService)
 {
     $scope.projects = [];
     $scope.skills = [];
-
+    $scope.files = {
+        'projectId': '',
+        'images': []
+    };
     $scope.newProjectData = {};
 
 
@@ -13,12 +16,11 @@ portfolio.controller('ProjectsController', ['$scope', 'Upload', 'ajaxService', '
 
     $scope.save = function(form, category, data)
     {
-        console.log($scope.newProjectData.mainImage);
-        if (form.mainImage && form.mainImage.$valid && $scope.file && !$scope.file.$error) {
-            console.log($scope.file);
-        }
-        if (form.secondImage && form.secondImage.$valid && $scope.file && !$scope.file.$error) {
-            console.log($scope.file);
+        console.log(data);
+        console.log($scope.files.images);
+        if (data.images && Object.keys(data.images).length >= 0) {
+            $scope.files.images = data.images;
+            delete data.images;
         }
         if (data.skillTags && data.skillTags.length <= 0) {
             delete data.skillTags;
@@ -29,12 +31,33 @@ portfolio.controller('ProjectsController', ['$scope', 'Upload', 'ajaxService', '
                 }
             });
         }
-
-        data = formatService.formatAjaxDataObject(category, data);
-
-        console.log(data);
+        $scope.saveImages($scope.files, category);
+        //data = formatService.formatAjaxDataObject(category, data);
+        //ajaxService.post(data).then(function(returnedData) {
+        //    if (Object.keys(returnedData.data).length > 0 && returnedData.status == 200) {
+        //       $scope.files.url = formatService.singularise(category) + '/images';
+        //       $scope.files.projectId = returnedData.data.id;
+        //            $scope.resetForm(form);
+        //
+        //    }
+        //});
     };
 
+    $scope.saveImages = function(obToSave, category)
+    {
+        console.log('loading images...');
+        obToSave.projectId = 13;
+        obToSave.url = formatService.singularise(category) + '/images';
+        ajaxService.postImages(obToSave);
+    };
+
+    $scope.onFileSuccess = function($data)
+    {
+        $scope.projects[$data.data.projectId].images = $data.data;
+        $scope.resetFileObject();
+        $scope.newProjectData = {};
+        $scope.newProject = false;
+    };
 
     $scope.$watch($scope.isEditable, function()
     {
@@ -47,4 +70,19 @@ portfolio.controller('ProjectsController', ['$scope', 'Upload', 'ajaxService', '
             });
         }
     });
+
+    $scope.resetForm = function(form)
+    {
+        form.$setPristine();
+        form.$setUntouched();
+        form.$rollbackViewValue();
+    };
+
+    $scope.resetFileObject = function()
+    {
+        $scope.files = {
+          'projectId': '',
+            images: []
+        };
+    }
 }]);

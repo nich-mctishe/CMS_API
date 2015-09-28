@@ -11,18 +11,18 @@ class Image extends Model
     protected $fillable = ['fileName', 'folderLocation', 'parentId', 'parentSection', 'local'];
 
     public function client() {
-        return $this->belongsTo('Client');
+        return $this->belongsTo('Portfolio\Models\Client');
     }
 
     public function project() {
-        return $this->belongsTo('Project');
+        return $this->belongsTo('Portfolio\Models\Project');
     }
 
     public function projlet() {
-        return $this->belongsTo('Projlet');
+        return $this->belongsTo('Portfolio\Models\Projlet');
     }
 
     public function workExperience() {
-        return $this->belongsTo('WorkExperience');
+        return $this->belongsTo('Portfolio\Models\WorkExperience');
     }
 }

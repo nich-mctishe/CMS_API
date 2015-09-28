@@ -21,7 +21,7 @@ class ViewController extends Controller {
     public function index($routeSuffix)
     {
         $this->data['pageType'] = $routeSuffix;
-        ($routeSuffix == 'projlets') ? 'projects' : $routeSuffix;
+        ($routeSuffix == 'projlets') ? $routeSuffix = 'projects' : $routeSuffix;
 
         return view('content.'.$routeSuffix, $this->data);
     }

@@ -7,16 +7,12 @@ Client:
         - {name: role, criteria: required}
 Image: #these criteria might have to change as they are porbably server generated.
     ValidationRules:
-        - {name: fileName, criteria: required}
-        - {name: folderLocation, criteria: required}
-        - {name: parentId, criteria: required}
-        - {name: parentSection, criteria: required}
-        - {name: local, criteria: required}
+        - {name: mimeType, criteria: image}
 Project:
     ValidationRules:
-        - {name: title, criteria: required}
-        - {name: description, criteria: required}
-        - {name: moreInfo, criteria: required}
+        - {name: title, criteria: required|string}
+        - {name: description, criteria: required|string}
+        - {name: moreInfo, criteria: string}
 Projlet:
     ValidationRules:
         - {name: title, criteria: required}
@@ -31,9 +27,7 @@ SkillCategory:
         - {name: name, criteria: required}
 SkillTag:
     ValidationRules:
-        - {name: skillId, criteria: required}
-        - {name: projectId, criteria: required}
-        - {name: projletId, criteria: required}
+        - {name: skillId, criteria: required|numeric}
 WorkExperience:
     ValidationRules:
         - {name: name, criteria: required}

@@ -3,8 +3,10 @@
 namespace Portfolio\Services;
 
 use Exception;
+use League\Flysystem\File;
 use Portfolio\Exceptions\SectionNotValidException;
 use Illuminate\Http\Request;
+use Portfolio\Models\Image;
 
 
 class ApiService
@@ -15,6 +17,11 @@ class ApiService
     protected $modelsNamespace;
 
     /**
+     * @var string
+     */
+    protected $currentDirectory;
+
+    /**
      * Constructor
      *
      * @return void
@@ -22,6 +29,7 @@ class ApiService
     public function __construct()
     {
         $this->modelsNamespace = 'Portfolio\\Models\\';
+        $this->currentDirectory = $_SERVER['DOCUMENT_ROOT'];
     }
 
     /**
@@ -122,9 +130,9 @@ class ApiService
     {
         try {
             $model = $this->setClass($section);
-            $model->destroy($id);
+            $model->findOrFail($id)->delete();
         } catch (Exception $e) {
-            if (gettype($e->getCode()) == 'string') {
+            if (gettype($e->getCode()) == 'string' || $e->getCode() == 0) {
                 throw new \Exception($e->getMessage(), 400);
             }
             throw new Exception($e->getMessage(), $e->getCode());
@@ -155,25 +163,11 @@ class ApiService
     private function runUploadToDb($model, Request $request)
     {
         $dependants = [];
+        ($model->id) ? $isForEdit = true : $isForEdit = false;
         $className = lcfirst(explode("\\", get_class($model))[2]);
-
         foreach ($request->all() as $key => $value) {
             switch ($key) {
-                case $key == 'images':
-                    $dependants['images'] = [];
-                    foreach ($value as $image) {
-                        //upload image
-                        $newData = $this->uploadImages();
-                        //save to dependants array with the name of the dependant;
-                        array_push($dependants['image'], $newData);
-                    }
-                    break;
-                case $key == 'skillTags':
-                    //havent decided how to save skill cat data just yet.
-                    //save to dependants array with the name of the dependant;
-                    $dependants[$key] = $value;
-                    break;
-                case $key == 'skills':
+                case $key == 'skillTags' || $key == 'skills':
                     $dependants[$key] = $value;
                     break;
                 default:
@@ -190,29 +184,34 @@ class ApiService
             $validator = new ValidationService();
             foreach ($dependants as $dependant => $data) {
                 $validator->runValidationFromArray(ucfirst(str_singular($dependant)), $data);
-                foreach($data as $key => $value) {
-                    if ($key != 'id' && $key != '$$hashKey'
-                        && $key != 'created_at' && $key != 'updated_at') {
-                        $model->$dependant()->$key = $value;
+                if ($isForEdit) {
+                    //could run $model->$dependant->delete() to ensure a simple way to update dependencies?
+                    foreach($data as $parentKey => $insert) {
+                        foreach ($insert as $key => $value) {
+                            if ($key != 'id' && $key != '$$hashKey'
+                                && $key != 'created_at' && $key != 'updated_at') {
+                                $model->$dependant()->$key = $value;
+                            }
+                        }
+                        $model->$dependant()->$dependencyIdName = $model->id;
+                        $model->$dependant()->save();
+                    }
+                } else {
+                    foreach($data as $parentKey => $insert) {
+                        $newDependant = $this->setClass(str_singular(ucfirst($dependant)));
+                        foreach ($insert as $key => $value) {
+                            if ($key != 'id' && $key != '$$hashKey'
+                                && $key != 'created_at' && $key != 'updated_at') {
+                                $newDependant->$key = $value;
+                            }
+                        }
+                        $newDependant->$dependencyIdName = $model->id;
+                        $model->$dependant()->save($newDependant);
                     }
                 }
-                $model->$dependant()->$dependencyIdName = $model->id;
-                $model->$dependant()->save();
             }
         }
 
         return $model;
-    }
-
-    private function uploadImages()
-    {
-        //this will need to be sorted out once i am aware of the uploader criteria.
-
-        //might need a model to ensure images dont exist already. or do we just assume all image changes are new.
-
-        //essentually this function needs to upload the images to a new place and then return an array with
-        //all the required data to be saved in to the model.
-
-        //also a check will need to be done to find out if the 'image' is actually a link to an external source.
     }
 }

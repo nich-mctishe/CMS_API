@@ -26,7 +26,9 @@ Route::group(['prefix' => 'route-master'], function ()
 Route::group(['prefix' => 'api'], function ()
 {
     Route::get('{section}/{id?}', 'ApiController@show');
+
     Route::post('{section}/update/{id}', 'ApiController@update');
+    Route::post('{section}/images/{parentId}/{id?}', 'ApiFileController@fileUploadAction');
     Route::post('{section}', 'ApiController@create');
     Route::delete('{section}/{id}', 'ApiController@destroy');
 

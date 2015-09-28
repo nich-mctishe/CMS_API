@@ -8,7 +8,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
         "jenssegers/agent": "^2.2",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "flowjs/flow-php-server": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

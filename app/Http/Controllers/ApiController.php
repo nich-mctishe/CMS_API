@@ -82,6 +82,12 @@ class ApiController extends Controller
         return $this->runRequest($requestData);
     }
 
+    /**
+     * Run Request
+     *
+     * @param $requestData
+     * @return \Illuminate\Http\JsonResponse
+     */
     private function runRequest($requestData)
     {
         $service = new ApiService();
