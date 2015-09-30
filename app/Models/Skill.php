@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Skill extends Model
 {
+    public static $snakeAttributes = false;
+
     protected $table = 'skills';
 
     protected $fillable = ['name', 'categoryId', 'desc'];

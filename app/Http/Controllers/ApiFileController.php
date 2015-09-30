@@ -3,23 +3,9 @@
 namespace Portfolio\Http\Controllers;
 
 use Portfolio\Services\ApiFileService;
-use Portfolio\Models\JsonObject;
 
-class ApiFileController extends Controller {
-
-    /**
-     * all exceptions should be bubbled up to here.
-     */
-    protected $response;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->response = new JsonObject();
-    }
-
+class ApiFileController extends ApiBaseController
+{
     /**
      * File Upload Action
      *

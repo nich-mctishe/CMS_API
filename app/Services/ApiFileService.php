@@ -134,7 +134,7 @@ class ApiFileService {
         try {
             $image->findOrFail($id);
             if ($image->local) {
-                $file->delete($image->directory.$image->name);
+                $file->delete($image->folderLocation.$image->fileName);
             }
             $image->delete();
         } catch (Exception $e) {

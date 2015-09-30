@@ -12,6 +12,16 @@ class SkillTag extends Model
 
     public function skill()
     {
-        return $this->hasOne('Skill');
+        return $this->hasOne('Portfolio\Models\Skill', 'id', 'skillId');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo('Portfolio\Models\Project', 'id', 'projectId');
+    }
+
+    public function projlet()
+    {
+        return $this->belongsTo('Portfolio\Models\Projlet', 'id', 'projletId');
     }
 }

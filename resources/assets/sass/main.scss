@@ -1,6 +1,6 @@
-/* vars */
+// vars */
 
-/* colours */
+// colours *
 $background-colour: #F0F0F0;
 $main-colour: #990000;
 $submain-colour: #009900;
@@ -15,7 +15,7 @@ $extra-text-colour: black;
 $colours: $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2,
 $supporting-submain-colour-3, $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2;
 
-/* fonts */
+// fonts
 
 @font-face {
   font-family:Reswysokr;
@@ -29,7 +29,7 @@ $supporting-submain-colour-3, $submain-colour, $supporting-submain-colour-1, $su
 $head-font-family: Reswysokr, serif;
 $sub-font-family: corbel, helvetica, arial, sans-serif;
 
-/* font sizes */
+// font sizes */
 
 $h1: 3em;
 $h1-large: 5em;
@@ -41,11 +41,11 @@ $p: 14px;
 $ul-mobile: 1.5em;
 $ul-desktop: 1.3em;
 
-/* lenghts */
+// lenghts */
 $main-circle-size: 475px;
 $small-circle-size: 100px;
 
-/* mixins */
+// mixins */
 
 @mixin mob-a-styles ($size, $colour) {
   font-size: $size;
@@ -75,7 +75,7 @@ $small-circle-size: 100px;
   -ms-transform: rotate($value);
   transform: rotate($value);
 }
-/* main sass */
+// main sass */
 
 body, html {
   background: $background-colour;
@@ -95,7 +95,7 @@ nav {
     > section.mast {
       background: $main-colour;
       padding: 2%;
-      width: 100%;
+      width: 98%;
       float: left;
 
       > h1 {
@@ -390,7 +390,6 @@ nav {
 section.content {
   float: left;
   width: 96%;
-  float: left;
 
   @media screen and (max-width: 600px) {
     margin: 16% 2% 5% 2%;
@@ -404,13 +403,13 @@ section.content {
         width: 98%;
         height: 25px;
       }
-      >input[type=submit] {
+      input[type=submit] {
         background: $submain-colour;
         color: $main-text-colour;
         border: none;
         width: 100%;
       }
-      >textarea {
+      textarea {
         width: 100%;
         height: 100px;
         float: left;
@@ -421,7 +420,7 @@ section.content {
         float: left;
         text-align: center;
       }
-      > select {
+      select {
         width: 100%;
         float: left;
         text-align: center;
@@ -442,7 +441,7 @@ section.content {
     overflow: hidden;
     max-height: 0;
     &.active {
-      max-height: 600px;
+      max-height: 4000px;
       @include transition-handler(max-height, 0.25s, linear);
     }
     &.disabled {
@@ -575,4 +574,192 @@ section.content.skills {
 section.content.projects {
   width: 100%;
   margin: 0 auto;
+
+  > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    float: left;
+
+    > li {
+      width: 99%;
+      float: left;
+      background: $main-colour;
+      color: $main-text-colour;
+      border: 2px solid $submain-colour;
+      border-bottom: none;
+      &:first-of-type {
+        margin-top: 2%;
+      }
+      .read-more-icon {
+        width: 100%;
+        float: left;
+        color: $main-text-colour;
+        font-size: $h2;
+        text-align: center;
+        padding: 2% 0;
+      }
+      section.read-more {
+        float: left;
+        overflow: hidden;
+        width: 100%;
+        max-height: 0;
+        &.active {
+          max-height: 4000px;
+          @include transition-handler(max-height, 0.5s, linear);
+        }
+        &.disabled {
+          max-height: 0;
+          @include transition-handler(max-height, 0.5s, linear);
+        }
+        > h3 {
+          width: 100%;
+          float: left;
+          padding: 1% 0 2% 2%;
+          margin: 0;
+        }
+        > ul.skills {
+          width: 100%;
+          float: left;
+          padding: 0 0 2% 2%;
+          margin: 0;
+          >li {
+            float: left;
+            font-style: italic;
+            padding-left: 1%;
+            &:first-of-type {
+              padding-left: 0;
+            }
+          }
+        }
+      }
+      div.imgWrapper {
+        width: 100%;
+        display: block;
+        height: 0;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+        border-bottom: 1px solid $submain-colour;
+        > img {
+          width: 100%;
+        }
+      }
+      ul.toolbar {
+        width: 100%;
+        float: left;
+        margin: 0;
+        padding: 0;
+        > li {
+          background: $submain-colour;
+          padding: 2% 0;
+          font-size: 18px;
+          float: left;
+          width: 25%;
+          text-align: center;
+          &.two {
+            width: 50%;
+          }
+        }
+      }
+      h2 {
+        width: 100%;
+        float: left;
+        margin: 0 2%;
+        padding: 2% 0;
+      }
+      span.triangle {
+        position: relative;
+        float: left;
+        margin: -5.5% 0 0 0;
+        width: 0;
+        height: 0;
+        left: 45%;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid $main-colour;
+      }
+      section.description, section.moreInfo {
+        width: 96%;
+        float: left;
+        text-align: left;
+        margin: 0 2%;
+        padding: 2% 0;
+
+        // these below styles are for final html textarea formatting
+        > h1 {
+
+        }
+        > h2 {
+
+        }
+        > h3 {
+
+        }
+        > h4 {
+
+        }
+        > h5 {
+
+        }
+        > p {
+
+        }
+        > ul {
+         > li {
+
+         }
+        }
+        > code {
+
+        }
+      }
+      form {
+        >input:not([type=submit]), >textarea {
+          background: $main-text-colour;
+        }
+      }
+    }
+  }
+}
+section.content.contact {
+  margin: 0 2%;
+  > ul {
+    list-style-type: none;
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    > li {
+      margin: 2% 0;
+      width: 100%;
+      float: left;
+      > a {
+        font-size: $h3;
+        text-decoration: none;
+        color: $main-colour;
+        >span {
+          float: left;
+          padding-top: 15px;
+          &.icon {
+            width: 52px;
+            height: 52px;
+            border: none;
+            border-radius: 200px;
+            padding-left: 4px;
+            padding-top: 4px;
+            text-align: center;
+            margin: 0 5% 0 0;
+            color: $main-text-colour;
+            font-size: $h2-large;
+          }
+        }
+      }
+    }
+    @for $i from 1 through length($colours) {
+      > li:nth-child(#{length($colours)}n+#{$i}) > a > span.icon {
+        background: nth($colours, $i)
+      }
+    }
+  }
 }

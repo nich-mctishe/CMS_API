@@ -3,26 +3,12 @@
 namespace Portfolio\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Portfolio\Http\Requests;
-use Portfolio\Http\Controllers\Controller;
-use Portfolio\Models\JsonObject;
 use Portfolio\Services\ApiService;
 use Exception;
 
-class ApiController extends Controller
+class ApiController extends ApiBaseController
 {
-    /**
-     * all exceptions should be bubbled up to here.
-     */
-
-    protected $response;
-
-    public function __construct()
-    {
-        $this->response = new JsonObject();
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -109,7 +95,8 @@ class ApiController extends Controller
             }
             $this->response->setContent($action)->setStatus(200);
         } catch (Exception $e) {
-            $this->response->setContent($e->getMessage())->setStatus($e->getCode());
+            ($e->getCode() > 0) ? $code = $e->getCode() : $code = 400;
+            $this->response->setContent($e->getMessage())->setStatus($code);
         }
 
         return response()->json($this->response->getContent(), $this->response->getStatus());

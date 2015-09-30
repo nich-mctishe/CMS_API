@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    public static $snakeAttributes = false;
+
     protected $table = 'projects';
 
     protected $fillable = ['title', 'description', 'moreInfo'];
@@ -17,7 +19,7 @@ class Project extends Model
 
     public function skillTags()
     {
-        return $this->hasMany('Portfolio\Models\SkillTag', 'projectId', 'id');
+        return $this->hasMany('Portfolio\Models\SkillTag', 'projectId', 'id')->with('skill');
     }
 
     public function withDependencies()
@@ -30,7 +32,7 @@ class Project extends Model
         parent::boot();
 
         static::deleting(function($project) { // before delete() method call this
-            $project->images()->delete();
+            $project->images()->where('parentSection', '=', 'project')->delete();
             $project->skillTags()->delete();
         });
     }

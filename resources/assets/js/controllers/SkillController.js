@@ -28,6 +28,9 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
                 switch (category) {
                     case 'skill':
                         watch.newSkill = false;
+                        if (!$scope.skillCategory[parentIndex].skills) {
+                            $scope.skillCategory[parentIndex].skills = [];
+                        }
                         $scope.skillCategory[parentIndex].skills.push(returnedData.data);
                         $scope.skillData = {};
                         break;
@@ -125,7 +128,7 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
             'url': url,
             'data': data
         };
-    }
+    };
 
     $scope.determineUrlRequired = function(category)
     {
@@ -134,6 +137,6 @@ portfolio.controller('SkillController', ['$scope', '$http', 'dataService','ajaxS
         }
 
         return catUrl;
-    }
+    };
 
 }]);

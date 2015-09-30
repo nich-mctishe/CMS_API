@@ -1,8 +1,11 @@
 <section class="content contact">
     <ul class="contactList">
-        <li><span class="tel"></span>(+44) 7540 131434</li>
-        <li><span class="email"></span>nichheadlong@googlemail.com</li>
-        <li><span class="cv"></span><a href="/assets/downloadableContent/nicholasheadlongCv.pdf">Download CV</a></li>
-        <li><span class="linkedIn"></span> Visit me on LinkedIn</li>
+        <li><a href="tel:00447540131434"><span class="icon">t:</span><span class="data">(+44) 7540 131434</span></a></li>
+        <li><a href="mailto:nicholasheadlong@googlemail.com"><span class="icon">e:</span><span
+                        class="data">nichheadlong@googlemail.com</span></a></li>
+        <li><a href="/assets/downloadableContent/nicholasheadlongCv.pdf"><span class="icon">cv:</span><span
+                        class="data">Download CV</span></a></li>
+        <li><a href="https://uk.linkedin.com/pub/nicholas-headlong/48/926/0"><span class="icon">in:</span><span
+                        class="data">Visit me on LinkedIn</span></a></li>
     </ul>
 </section>

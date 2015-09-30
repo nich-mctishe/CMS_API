@@ -13,10 +13,12 @@ Project:
         - {name: title, criteria: required|string}
         - {name: description, criteria: required|string}
         - {name: moreInfo, criteria: string}
+        - {name: skillTags, criteria: ''}
 Projlet:
     ValidationRules:
         - {name: title, criteria: required}
         - {name: description, criteria: required}
+        - {name: skillTags, criteria: ''}
 Skill:
     ValidationRules:
         - {name: name, criteria: required}

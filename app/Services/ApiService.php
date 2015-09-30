@@ -6,7 +6,6 @@ use Exception;
 use League\Flysystem\File;
 use Portfolio\Exceptions\SectionNotValidException;
 use Illuminate\Http\Request;
-use Portfolio\Models\Image;
 
 
 class ApiService
@@ -17,19 +16,11 @@ class ApiService
     protected $modelsNamespace;
 
     /**
-     * @var string
-     */
-    protected $currentDirectory;
-
-    /**
      * Constructor
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->modelsNamespace = 'Portfolio\\Models\\';
-        $this->currentDirectory = $_SERVER['DOCUMENT_ROOT'];
     }
 
     /**
@@ -113,7 +104,8 @@ class ApiService
             }
             throw new Exception($e->getMessage(), $e->getCode());
         }
-
+        var_dump($saved);
+        die;
         return $saved;
     }
 
