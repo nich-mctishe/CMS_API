@@ -21,19 +21,17 @@ Route::get('home', ['middleware' => 'auth', 'uses' => 'ViewController@redirectTo
 Route::group(['prefix' => 'route-master'], function ()
 {
     Route::get('{routeSuffix}', 'ViewController@index');
-
+    Route::get('lp/{routeSuffix}/{articleId?}', 'ViewController@landingPage');
 });
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
     Route::get('{section}/{id?}', 'ApiController@show');
-
-    Route::group(['middleware' => 'auth'], function () {
-        //these may need to be out of before auth if further postman testing is required.
-        Route::post('{section}/update/{id}', 'ApiController@update');
-        Route::post('{section}/images/{parentId}/{id?}', 'ApiFileController@fileUploadAction');
-        Route::post('{section}', 'ApiController@create');
-        Route::delete('{section}/{id}', 'ApiController@destroy');
-    });
+});
+Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
+    //these may need to be out of before auth if further postman testing is required.
+    Route::post('{section}/update/{id}', 'ApiController@update');
+    Route::post('{section}/images/{parentId}/{id?}', 'ApiFileController@fileUploadAction');
+    Route::post('{section}', 'ApiController@create');
+    Route::delete('{section}/{id}', 'ApiController@destroy');
 });
 /**
  * this route is purely for development purposes remove before deployment.

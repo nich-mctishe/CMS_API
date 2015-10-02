@@ -3,6 +3,7 @@
 namespace Portfolio\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Portfolio\Services\ApiFileService;
 
 class Projlet extends Model
 {
@@ -32,7 +33,15 @@ class Projlet extends Model
         parent::boot();
 
         static::deleting(function($project) { // before delete() method call this
-            $project->images()->where('parentSection', '=', 'projlet')->delete();
+            $image = new Image();
+            $image
+                ->where('parentSection', '=', 'project')
+                ->where('parentId', '=', $client->id)->first();
+            if ($image) {
+                $fileService = new ApiFileService($image->parentSection, $image->parentId);
+                $fileService->handleImageDelete($image->id);
+                $image->delete();
+            }
             $project->skillTags()->delete();
         });
     }

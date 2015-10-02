@@ -11,7 +11,7 @@
         <li><a href="#projlets">Projlets</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#work-experience" class="double-line">Work Experience</a></li>
-        <li><a href="http://blog.nocholasheadlong.co.uk">Blog</a></li>
+        <li><a href="http://www.tumblr.com/blog/nichheadlong">Blog</a></li>
         <li><a href="/assets/downloadableContent/nicholasheadlongCv.pdf">CV</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>

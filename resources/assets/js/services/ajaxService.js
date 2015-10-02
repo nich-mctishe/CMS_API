@@ -21,12 +21,12 @@ portfolio.service('ajaxService', ['$http', function($http) {
             });
         },
         postImages: function(files) {
-            console.log(files);
-            var url = apiUrl + files.url + '/' + files.projectId;
+            var url = apiUrl + files.url + '/' + files.parentId;
             if (files.id) {
                 url = url + '/' + files.id;
             }
             angular.forEach(files.images, function(image, key){
+                console.log(image);
                 image.flow.opts.target = url;
                 image.flow.opts.headers = {
                     "X-CSRF-TOKEN": CSRF_TOKEN

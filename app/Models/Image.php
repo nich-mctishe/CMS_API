@@ -25,4 +25,9 @@ class Image extends Model
     public function workExperience() {
         return $this->belongsTo('Portfolio\Models\WorkExperience');
     }
+
+    public function withDependencies()
+    {
+        return $this->with(['WorkExperience', 'Projlet', 'Project', 'Client']);
+    }
 }

@@ -1,10 +1,6 @@
 Client:
     ValidationRules:
         - {name: name, criteria: required}
-        - {name: description, criteria: required}
-        - {name: dateStarted, criteria: required}
-        - {name: dateEnded, criteria: required}
-        - {name: role, criteria: required}
 Image: #these criteria might have to change as they are porbably server generated.
     ValidationRules:
         - {name: mimeType, criteria: image}
@@ -13,12 +9,12 @@ Project:
         - {name: title, criteria: required|string}
         - {name: description, criteria: required|string}
         - {name: moreInfo, criteria: string}
-        - {name: skillTags, criteria: ''}
+        - {name: skillTags, criteria: array}
 Projlet:
     ValidationRules:
         - {name: title, criteria: required}
         - {name: description, criteria: required}
-        - {name: skillTags, criteria: ''}
+        - {name: skillTags, criteria: array}
 Skill:
     ValidationRules:
         - {name: name, criteria: required}

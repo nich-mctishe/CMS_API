@@ -110,6 +110,8 @@ nav {
         width: 25%;
         position: relative;
         padding-left: 4.25em;
+        float: right;
+        margin: -9% 0 0 0;
 
         &:before {
           content: "";
@@ -391,6 +393,7 @@ section.content {
   float: left;
   width: 96%;
 
+
   @media screen and (max-width: 600px) {
     margin: 16% 2% 5% 2%;
 
@@ -403,11 +406,15 @@ section.content {
         width: 98%;
         height: 25px;
       }
-      input[type=submit] {
+      input[type=submit], span.button {
         background: $submain-colour;
         color: $main-text-colour;
         border: none;
         width: 100%;
+      }
+      span.button {
+        text-align: center;
+        float: left;
       }
       textarea {
         width: 100%;
@@ -435,18 +442,35 @@ section.content {
       }
     }
   }
-
+  ul.toolbar {
+    color: $main-text-colour;
+    width: 100%;
+    float: left;
+    margin: 0;
+    padding: 0;
+    > li {
+      background: $submain-colour;
+      padding: 2% 0;
+      font-size: 18px;
+      float: left;
+      width: 25%;
+      text-align: center;
+      &.two {
+        width: 50%;
+      }
+    }
+  }
   form {
     float: left;
     overflow: hidden;
     max-height: 0;
     &.active {
-      max-height: 4000px;
-      @include transition-handler(max-height, 0.25s, linear);
+      max-height: 2000px;
+      @include transition-handler(max-height, 0.5s, linear);
     }
     &.disabled {
       max-height: 0;
-      @include transition-handler(max-height, 0.25s, linear);
+      @include transition-handler(max-height, 0.5s, linear);
     }
 
     > input {
@@ -554,13 +578,16 @@ section.content.skills {
         float: right;
       }
       ul.toolbar {
+        color: $extra-text-colour;
         list-style-type: none;
+        background: none;
         cursor: pointer;
         float: right;
         width: 20%;
         margin: 0;
         padding: 0;
         > li {
+          background: none;
           float: left;
           margin: 0 0 0 10%;
           &:first-of-type {
@@ -571,11 +598,11 @@ section.content.skills {
     }
   }
 }
-section.content.projects {
+section.content.projects, section.content.work-experience {
   width: 100%;
   margin: 0 auto;
 
-  > ul {
+  ul:not(.toolbar) {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -588,7 +615,7 @@ section.content.projects {
       background: $main-colour;
       color: $main-text-colour;
       border: 2px solid $submain-colour;
-      border-bottom: none;
+      margin-bottom: 1%;
       &:first-of-type {
         margin-top: 2%;
       }
@@ -627,6 +654,7 @@ section.content.projects {
           >li {
             float: left;
             font-style: italic;
+            text-decoration: underline;
             padding-left: 1%;
             &:first-of-type {
               padding-left: 0;
@@ -643,23 +671,6 @@ section.content.projects {
         border-bottom: 1px solid $submain-colour;
         > img {
           width: 100%;
-        }
-      }
-      ul.toolbar {
-        width: 100%;
-        float: left;
-        margin: 0;
-        padding: 0;
-        > li {
-          background: $submain-colour;
-          padding: 2% 0;
-          font-size: 18px;
-          float: left;
-          width: 25%;
-          text-align: center;
-          &.two {
-            width: 50%;
-          }
         }
       }
       h2 {
@@ -761,5 +772,30 @@ section.content.contact {
         background: nth($colours, $i)
       }
     }
+  }
+}
+section.content.work-experience {
+  width: 100%;
+  float: left;
+  margin: 0 0 0 0;
+
+  > section.clients, > section.past-employers {
+    > h2 {
+      color: $main-colour;
+      font-family: $head-font-family;
+      font-size: $h2;
+      margin: 2% 0 -1% 0;
+    }
+  }
+  > form {
+    margin-top: 3%;
+  }
+  h3 {
+    margin: 0 2%;
+  }
+  div.upload {
+    float: left;
+    display: inline-block;
+    width: 100%;
   }
 }

@@ -5,7 +5,7 @@ portfolio.controller('ProjectsController', ['$scope', 'ajaxService', 'formatServ
     $scope.projects = [];
     $scope.skills = [];
     $scope.files = {
-        'projectId': '',
+        'parentId': '',
         'images': []
     };
     $scope.projectData = {};
@@ -30,42 +30,50 @@ portfolio.controller('ProjectsController', ['$scope', 'ajaxService', 'formatServ
 
     $scope.save = function(form, category, data)
     {
-        if (data.images && Object.keys(data.images).length >= 0) {
-            $scope.files.images = data.images;
-            delete data.images;
+        if ($scope.files.images) {
+            angular.forEach($scope.files.images, function(file, key) {
+                if (file.flow.files.length == 0) {
+                    delete $scope.files.images[key];
+                }
+            });
         }
         if (data.skillTags && data.skillTags.length <= 0) {
             delete data.skillTags;
         } else {
             angular.forEach(data.skillTags, function(value, key) {
-                data.skillTags[key] = {
-                    'skillId' : value
+                if (typeof(value) == 'string') {
+                    data.skillTags[key] = {
+                        'skillId': value
+                    }
                 }
             });
         }
         data = formatService.formatAjaxDataObject(category, data);
         ajaxService.post(data).then(function(returnedData) {
             if (Object.keys(returnedData.data).length > 0 && returnedData.status == 200) {
-               $scope.files.url = formatService.singularise(category) + '/images';
-               $scope.files.projectId = returnedData.data.id;
+                if (Object.keys($scope.files.images).length > 0) {
+                    $scope.files.url = formatService.singularise(category) + '/images';
+                    $scope.files.parentId = returnedData.data.id;
                     $scope.saveImages($scope.files);
                     $scope.resetForm(form);
+                } else {
+                    $scope.uploader.renderResult();
+                }
             }
         });
     };
 
     $scope.saveImages = function(obToSave)
     {
-        console.log('loading images...');
         ajaxService.postImages(obToSave);
     };
 
-    $scope.deleteImage = function(parentId, imageId, index, imageNo)
+    $scope.deleteImage = function(imageId, index, imageNo)
     {
-        data = formatService.singularise($scope.category) + '/images/' + parentId + '/' + imageId;
+        var data = 'image/' + imageId;
         ajaxService.delete(data).then(function(returnedData) {
             if (returnedData.status == 200 && Object.keys(returnedData).length > 0) {
-                $scope.projects[index].images[imageNo] = returnedData.data;
+                $scope.projects[index].images.splice(imageNo, 1);
                 $scope.resetFileObject();
             }
         });
@@ -85,18 +93,15 @@ portfolio.controller('ProjectsController', ['$scope', 'ajaxService', 'formatServ
     {
         var category = formatService.singularise($scope.category);
         var sentData = $scope.projects[index];
-        if (sentData.images) {
-            delete sentData.images;
-        }
-        angular.forEach(data.skillTags, function(value, key) {
-            data.skillTags[key] = {
-                'skillId' : value
+
+        angular.forEach(sentData.skillTags, function(skillTag, key) {
+            var skillId = skillTag.id;
+            sentData.skillTags[key] = {
+                'skillId' : skillId
             };
-            data.skillTags[key][category+'Id'] = sentData.id;
+            sentData.skillTags[key][category+'Id'] = sentData.id;
         });
-        
-        console.log(sentData);
-        console.log($scope.projects[index]);
+
         var data = {
             'url': category,
             data: sentData
@@ -104,19 +109,41 @@ portfolio.controller('ProjectsController', ['$scope', 'ajaxService', 'formatServ
 
         ajaxService.update(data).then(function(returnedData) {
             if (returnedData.status == 200 && Object.keys(returnedData).length > 0) {
-                $scope.resetForm(form);
-                instance.editProjectSelected = false;
+                ajaxService.get(category + '/' + returnedData.data.id).then(function(result) {
+                    if (result.status == 200 && Object.keys(result).length > 0) {
+                        if (result.data.skillTags) {
+                            $scope.projects[index].skillTags = result.data.skillTags;
+                        }
+                        $scope.resetForm(form);
+                        instance.editProjectSelected = false;
+                    }
+                });
             }
         });
     };
 
-    $scope.$on('flow::filesSubmitted', function (event, $flow, flowFile) {
-        $scope.projects = [];
-        $scope.getProjects();
-        $scope.resetFileObject();
-        $scope.projectData = {};
-        $scope.newProject = false;
-    });
+    $scope.uploader = {
+        controllerFn: function ($flow, $file, $message) {
+            if (!$scope.projectData.images) {
+                $scope.projectData.images = [];
+            }
+            $scope.projectData.images.push(JSON.parse($message));
+            this.renderResult();
+        },
+        handleImageCallback: function($flow, $file, $message, $index, imageNo)
+        {
+            if (!$scope.projects[$index].images) {
+                $scope.projects[$index].images = [];
+            }
+            $scope.projects[$index].images[imageNo] = JSON.parse($message);
+        },
+        renderResult: function() {
+            $scope.projects.push($scope.projectData);
+            $scope.resetFileObject();
+            $scope.projectData = {};
+            $scope.newProject = false;
+        }
+    };
 
     $scope.$watch($scope.isEditable, function()
     {
@@ -124,6 +151,9 @@ portfolio.controller('ProjectsController', ['$scope', 'ajaxService', 'formatServ
             var data = 'skill';
             ajaxService.get(data).then(function(returnedData) {
                 if (returnedData.data.length > 0 && returnedData.status == 200) {
+                    for(var i = 0; i < returnedData.data.length; i++) {
+                        returnedData.data[i].skillId = returnedData.data[i].id;
+                    }
                     $scope.skills = returnedData.data;
                 }
             });
@@ -144,7 +174,7 @@ portfolio.controller('ProjectsController', ['$scope', 'ajaxService', 'formatServ
     $scope.resetFileObject = function()
     {
         $scope.files = {
-          'projectId': '',
+          'parentId': '',
             images: []
         };
     };

@@ -8,7 +8,7 @@ portfolio.config(['flowFactoryProvider', function (flowFactoryProvider) {
         target: baseUrl + targetUrl,
         testChunks:false,
         singleFile: true,
-        permanentErrors: [404, 500, 501],
+        permanentErrors: [415, 500, 501],
         maxChunkRetries: 1,
         chunkRetryInterval: 5000,
         simultaneousUploads: 4
@@ -43,8 +43,8 @@ portfolio.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
         templateUrl: routeUrl + 'skills'
     }).state('work-experience', {
         url: '/work-experience',
-        controller: 'WorkController',
-        templateUrl: routeUrl + 'skills'
+        controller: 'WorkExperienceController',
+        templateUrl: routeUrl + 'work-experience'
     }).state('contact', {
         url: '/contact',
         templateUrl: routeUrl + 'contact'

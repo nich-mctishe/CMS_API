@@ -3,6 +3,7 @@
 namespace Portfolio\Http\Controllers;
 
 use Jenssegers\Agent\Agent;
+use Portfolio\Services\ApiService;
 
 class ViewController extends Controller
 {
@@ -40,6 +41,25 @@ class ViewController extends Controller
         ($routeSuffix == 'projlets') ? $routeSuffix = 'projects' : $routeSuffix;
 
         return view('content.'.$routeSuffix, $this->data);
+    }
+
+    /**
+     * Build Landing Page
+     *
+     * @param $routeSuffix
+     * @param null $articleId
+     * @throws \Exception
+     *
+     * @return \Illuminate\View\View
+     */
+    public function landingPage($routeSuffix, $articleId = null)
+    {
+        $service = new ApiService();
+        $this->data['pageType'] = $routeSuffix;
+        $this->data['pageContent'] = $service->read(str_singular($routeSuffix), $articleId);
+        ($routeSuffix == 'projlets') ? $routeSuffix = 'projects' : $routeSuffix;
+
+        return view('landingPages.'.$routeSuffix, $this->data);
     }
 
     /**

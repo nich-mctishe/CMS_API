@@ -8,6 +8,8 @@ use Flow\Request as FlowRequest;
 use Flow\ConfigInterface;
 use Flow\RequestInterface;
 use Flow\Basic;
+use Exception;
+
 
 class ApiFileService {
     /**
@@ -92,9 +94,11 @@ class ApiFileService {
             $fileName = $fileName.'.'.$extension;
             if ($basic->save($this->directory.$this->location.$fileName, $config, $request)) {
                 $file = $this->handleImageSave($fileName, $this->location);
+
+                return $file;
             }
 
-            return $file;
+            throw new \Exception('unable to save file', 500);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -127,14 +131,14 @@ class ApiFileService {
      * @throws Exception
      * @throws \Exception
      */
-    private function handleImageDelete($id)
+    public function handleImageDelete($id)
     {
-        $image = new Image();
-        $file = new File();
         try {
-            $image->findOrFail($id);
-            if ($image->local) {
-                $file->delete($image->folderLocation.$image->fileName);
+            $image = Image::where('id', '=', $id)->first();
+            if ($image->local == '1') {
+                if(!unlink($this->directory.$image->folderLocation.$image->fileName)) {
+                    throw new Exception('unable to delete image', 500);
+                }
             }
             $image->delete();
         } catch (Exception $e) {

@@ -1,8 +1,6 @@
 <section class="content projects">
     @if (Auth::check())
-        <ul data-ng-init="isEditable=!isEditable" class="toolbar">
-            <li class="new-project two" data-ng-click="newProject=!newProject">&#43</li>
-        </ul>
+        <button class="new-project" data-ng-init="isEditable=!isEditable" data-ng-click="newProject=!newProject">&#43</button>
         <form name="newProjectForm" data-ng-class="(newProject) ? 'active' : 'disabled'" enctype="multipart/form-data"
               data-ng-submit="save(newProjectForm, '{{ $pageType }}', projectData)" novalidate data-ng-upload>
             <div flow-init flow-name="files.images[0].flow" flow-file-success="uploader.controllerFn($flow, $file, $message)">
@@ -75,8 +73,8 @@
                         <ul class="skills" data-ng-if="project.skillTags.length>0" data-ng-hide="editProjectSelected">
                             <li data-ng-repeat="skillTag in project.skillTags" data-ng-bind="skillTag.skill.name"></li>
                         </ul>
-                        <select multiple="multiple" data-ng-model="this.project.skillTags" name="skillTags"
-                                data-ng-options="skill.name for skill in skills track by skill.skillId" data-ng-show="editProjectSelected">
+                        <select multiple="" data-ng-model="this.project.skillTags" name="skillTags" data-ng-show="editProjectSelected">
+                            <option data-ng-repeat="skill in skills" data-ng-value="skill.id" data-ng-bind="skill.name"></option>
                         </select>
                     </section>
                     <input data-ng-show="editProjectSelected" type="submit" value="Update"/>

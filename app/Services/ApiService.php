@@ -6,6 +6,7 @@ use Exception;
 use League\Flysystem\File;
 use Portfolio\Exceptions\SectionNotValidException;
 use Illuminate\Http\Request;
+use Portfolio\Services\ApiFileService;
 
 
 class ApiService
@@ -39,13 +40,10 @@ class ApiService
 
         try {
             if ($id == null) {
-                return $model->withDependencies()->get();
+                return $model->withDependencies()->orderBy('id', 'desc')->get();
             }
 
-            return $model
-                ->where('id', '=', $id)
-                ->withDependencies()
-                ->get();
+            return $model->withDependencies()->where('id', '=', $id)->orderBy('id', 'desc')->first();
         } catch (\Exception $e) {
             if (gettype($e->getCode()) == 'string') {
                 throw new \Exception($e->getMessage(), 400);
@@ -104,8 +102,7 @@ class ApiService
             }
             throw new Exception($e->getMessage(), $e->getCode());
         }
-        var_dump($saved);
-        die;
+
         return $saved;
     }
 
@@ -121,8 +118,13 @@ class ApiService
     public function delete($section, $id)
     {
         try {
-            $model = $this->setClass($section);
-            $model->findOrFail($id)->delete();
+            if ($section == 'image') {
+                $fileService = new ApiFileService(null, null);
+                $fileService->handleImageDelete($id);
+            } else {
+                $model = $this->setClass($section);
+                $model->findOrFail($id)->delete();
+            }
         } catch (Exception $e) {
             if (gettype($e->getCode()) == 'string' || $e->getCode() == 0) {
                 throw new \Exception($e->getMessage(), 400);
@@ -164,7 +166,7 @@ class ApiService
                     break;
                 default:
                     if ($key != 'CSRF-TOKEN' && $key != 'id' && $key != '$$hashKey'
-                        && $key != 'created_at' && $key != 'updated_at') {
+                        && $key != 'created_at' && $key != 'updated_at' && $key != 'images' && $key != 'image') {
                         $model->$key = $value;
                     }
                     break;
@@ -177,29 +179,18 @@ class ApiService
             foreach ($dependants as $dependant => $data) {
                 $validator->runValidationFromArray(ucfirst(str_singular($dependant)), $data);
                 if ($isForEdit) {
-                    //could run $model->$dependant->delete() to ensure a simple way to update dependencies?
-                    foreach($data as $parentKey => $insert) {
-                        foreach ($insert as $key => $value) {
-                            if ($key != 'id' && $key != '$$hashKey'
-                                && $key != 'created_at' && $key != 'updated_at') {
-                                $model->$dependant()->$key = $value;
-                            }
+                    $model->$dependant()->delete();
+                }
+                foreach($data as $parentKey => $insert) {
+                    $newDependant = $this->setClass(str_singular(ucfirst($dependant)));
+                    foreach ($insert as $key => $value) {
+                        if ($key != 'id' && $key != '$$hashKey'
+                            && $key != 'created_at' && $key != 'updated_at') {
+                            $newDependant->$key = $value;
                         }
-                        $model->$dependant()->$dependencyIdName = $model->id;
-                        $model->$dependant()->save();
                     }
-                } else {
-                    foreach($data as $parentKey => $insert) {
-                        $newDependant = $this->setClass(str_singular(ucfirst($dependant)));
-                        foreach ($insert as $key => $value) {
-                            if ($key != 'id' && $key != '$$hashKey'
-                                && $key != 'created_at' && $key != 'updated_at') {
-                                $newDependant->$key = $value;
-                            }
-                        }
-                        $newDependant->$dependencyIdName = $model->id;
-                        $model->$dependant()->save($newDependant);
-                    }
+                    $newDependant->$dependencyIdName = $model->id;
+                    $model->$dependant()->save($newDependant);
                 }
             }
         }

@@ -24,4 +24,9 @@ class SkillTag extends Model
     {
         return $this->belongsTo('Portfolio\Models\Projlet', 'id', 'projletId');
     }
+
+    public function withDependencies()
+    {
+        return $this->with('skill');
+    }
 }
