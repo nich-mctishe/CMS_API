@@ -32,7 +32,6 @@ class Client extends Model
             if ($image->id) {
                 $fileService = new ApiFileService($image->parentSection, $image->parentId);
                 $fileService->handleImageDelete($image->id);
-                $image->delete();
             }
         });
     }

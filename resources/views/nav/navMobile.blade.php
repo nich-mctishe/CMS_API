@@ -2,7 +2,7 @@
     <div class="overlay" data-ng-click="menuActive=false" data-ng-class="(menuActive) ? 'active' : 'disabled'"></div>
     <section class="mast">
         <h1><a href="#/">Nicholas Headlong</a></h1>
-        <span class="menu" data-ng-click="menuActive = !menuActive">&nbsp;</span>
+        <img class="menu" src="/assets/systemImages/menuMobile.png" data-ng-click="menuActive = !menuActive" />
     </section>
     <nav class="nav mobile side-menu" data-ng-class="(menuActive) ? 'active' : 'disabled'">
         <button data-ng-click="menuActive = !menuActive">close menu</button>
@@ -11,7 +11,7 @@
             <li><a data-ng-click="menuActive = !menuActive" href="#projlets">Projlets</a></li>
             <li><a data-ng-click="menuActive = !menuActive" href="#skills">Skills</a></li>
             <li><a data-ng-click="menuActive = !menuActive" href="#work-experience">Work Experience</a></li>
-            <li><a href="http://www.tumblr.com/blog/nichheadlong">Blog</a></li>
+            <li><a href="http://nichheadlong.tumblr.com/">Blog</a></li>
             <li><a href="/assets/downloadableContent/nihcolasheadlongCv.pdf">CV</a></li>
             <li><a data-ng-click="menuActive = !menuActive" href="#contact">Contact</a></li>
         </ul>

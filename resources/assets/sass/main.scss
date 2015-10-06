@@ -12,6 +12,8 @@ $main-text-colour: #EEEEEE;
 $backup-text-colour: $main-colour;
 $extra-text-colour: black;
 
+$colours-nav: $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2,
+$main-colour, $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2;
 $colours: $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2,
 $supporting-submain-colour-3, $submain-colour, $supporting-submain-colour-1, $supporting-submain-colour-2;
 
@@ -68,12 +70,26 @@ $small-circle-size: 100px;
   transform: translateX($value);
 }
 
+@mixin handle-translateY-transformation($value) {
+  -webkit-transform: translateY($value);
+  -moz-transform: translateY($value);
+  -o-transform: translateY($value);
+  -ms-transform: translateY($value);
+  transform: translateY($value);
+}
+
 @mixin handle-rotation-transformation($value) {
   -webkit-transform: rotate($value);
   -moz-transform: rotate($value);
   -o-transform: rotate($value);
   -ms-transform: rotate($value);
   transform: rotate($value);
+}
+
+@mixin add-box-sizing() {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 // main sass */
 
@@ -106,25 +122,11 @@ nav {
           @include mob-a-styles($h1-mobile, $main-text-colour);
         }
       }
-      > span.menu {
-        width: 25%;
-        position: relative;
-        padding-left: 4.25em;
-        float: right;
-        margin: -9% 0 0 0;
-
-        &:before {
-          content: "";
-          margin: 0.3em 0 0 1.6em;
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 3em;
-          height: 0.5em;
-          background: $main-text-colour;
-          box-shadow: 0 0.75em 0 0 $main-text-colour,
-          0 1.5em 0 0 $main-text-colour;
-        }
+      > img.menu {
+        width: 12%;
+        padding: 0 4% 0 9%;
+        float: left;
+        cursor: pointer;
       }
     }
     >div.overlay {
@@ -212,255 +214,114 @@ nav {
   }
 
   &.desktop {
-    width: 600px;
-    height: 720px;
-    margin: 10px 0 0 0;
-    @include handle-translateX-transformation(-100%);
+    width: 100%;
+    float: left;
+    margin: 1% 0;
+    @include handle-translateY-transformation(-200%);
 
     &.initial {
-      @include handle-translateX-transformation(-14%);
-      @include transition-handler(transform, 0.75s, ease-out);
+      @include handle-translateX-transformation(0%);
+      @include transition-handler(transform, 0.4s, ease-out);
     }
-    >.mainCircle {
-      position: relative;
-      width: $main-circle-size;
-      height: $main-circle-size;
-      margin: 121px 0;
-      background: $main-colour;
-      border-radius: ($main-circle-size / 2);
-      transition: background 0.2s ease-out;
-      &:hover {
-        background: $supporting-submain-colour-3;
-        @include transition-handler(background, 0.2s, ease-in);
-      }
-      > a {
-        text-decoration: none;
-        > h1, h2 {
-          padding:0 0 0 28%;
-          margin: 0;
-          font-weight: 100;
-        }
-        > h1 {
-          font-size: $h1-large;
-          margin-top: -5.2%;
-        }
-        > h2 {
-          font-size: $h2;
-          margin: -4% 0 0 0.7%;
-        }
-        >h1:first-of-type {
-          padding-top: 25%;
-          margin-top: 0;
-        }
-      }
-    }
-    h1,h2,a {
-      color: $main-text-colour;
-    }
-    >.mainMenu {
+
+    > ul.mainMenu {
       list-style-type: none;
-      position: absolute;
-      top: 300px;
-      left: 207px;
+      width: 90%;
+      margin: 0 5%;
       padding: 0;
-      @include handle-rotation-transformation(-180deg);
+      float: left;
 
-      &.initial {
-        @include handle-rotation-transformation(0deg);
-        @include transition-handler(transform, 0.9s, ease-out)
-      }
-      >li {
-        position: absolute;
-        width: $small-circle-size;
-        height: $small-circle-size;
-        border-radius: 50px;
+      > li {
+        float: left;
+        font-family: $head-font-family;
+        color: $main-colour;
+        font-size: $h3;
+        @media screen and (max-width: 1350px) {margin: 0 0 0 6%;}
+        @media screen and (max-width: 1230px) {margin: 0 0 0 5%;}
+        @media screen and (max-width: 1115px) {margin: 0 0 0 4%;}
+        @media screen and (max-width: 1025px) {margin: 0 0 0 3%;}
+        @media screen and (max-width: 950px) {margin: 0 0 0 2%;}
+        @media screen and (max-width: 885px) {margin: 0 0 0 1%;}
 
-        $rot: 0;
-        $circles: 7;
-        $final-angle: 180;
-        $increment: $final-angle / $circles;
-        @for $i from 1 to $circles+1 {
-          &:nth-of-type(#{$i}) {
-            @if($i < (4)) {
-              -webkit-transform:
-                rotate(#{$rot}deg)       /* Rotate the axis */
-                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
-                translateX(($rot / 100) * 100% ) /* Move the item from the center */
-                rotate(-#{$rot}deg);     /* Rotate the item back to its default position */
-              -moz-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -o-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -ms-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - 20 - ($small-circle-size/2))
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-            } @elseif($i > (3) and $i < (6)) {
-              -webkit-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -moz-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -o-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -ms-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 10)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-            } @else {
-              -webkit-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -moz-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -o-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              -ms-transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
-              transform:
-                rotate(#{$rot}deg)
-                translateY(-($main-circle-size/2) - ($small-circle-size/2) + 35)
-                translateX(($rot / 100) * 100% )
-                rotate(-#{$rot}deg);
+        margin: 0 0 0 7%;
+        &:first-of-type {
+          margin: 0;
+        }
+        > div.circle {
+          float: left;
+          width: 100px;
+          height: 100px;
+          border: none;
+          border-radius: 50px;
+
+          > a {
+            display: block;
+            text-decoration: none;
+            color: $main-text-colour;
+            text-align: center;
+            vertical-align: middle;
+            padding: 35% 0;
+            &.double-line {
+              padding: 26% 0;
             }
           }
-
-          $rot: $rot + $increment; /* Increments the $rot variable for next item */
-        }
-        >a {
-          display: block;
-          text-decoration: none;
-          text-align: center;
-          font-size: $ul-desktop;
-          font-weight: 100;
-          padding-top: 38%;
-          &.double-line {
-            padding-top: 21%;
-          }
         }
       }
-      @for $i from 1 through length($colours) {
-        li:nth-child(#{length($colours)}n+#{$i}) {
-          background: nth($colours, $i);
+
+      @for $i from 1 through length($colours-nav) {
+        li:nth-child(#{length($colours-nav)}n+#{$i}) > div.circle {
+          background: nth($colours-nav, $i);
           @include transition-handler(background, 0.2s, ease-out);
         }
       }
-      >li:hover {
-        background: $main-colour;
-        @include transition-handler(background, 0.2s, ease-in);
+      > li {
+        &:hover {
+          > div.circle {
+            background: $main-colour;
+            @include transition-handler(background, 0.2s, ease-in);
+          }
+        }
+
+        &:nth-of-type(4) {
+          > span.extra-text {
+            float: left;
+            width: 0;
+            margin: 106% 0 0 -85%;
+            text-align: center;
+          }
+          &:hover > div.circle {
+            background: $submain-colour;
+            @include transition-handler(background, 0.2s, ease-in);
+          }
+        }
       }
     }
   }
 }
+
 section.content {
   float: left;
-  width: 96%;
+  width: 90%;
+  margin: 0 5%;
+  @media screen and (max-width: 700px) {
+    margin: 16% 0 0 5%;
+  }
+  h2, h3, p, a {
+    font-weight: 200;
+  }
 
-
-  @media screen and (max-width: 600px) {
-    margin: 16% 2% 5% 2%;
-
-    form {
-      font-family: $head-font-family;
-      width: 100%;
-      >input {
-        margin: 2% 0;
-        float: left;
-        width: 98%;
-        height: 25px;
-      }
-      input[type=submit], span.button {
-        background: $submain-colour;
-        color: $main-text-colour;
-        border: none;
-        width: 100%;
-      }
-      span.button {
-        text-align: center;
-        float: left;
-      }
-      textarea {
-        width: 100%;
-        height: 100px;
-        float: left;
-        border: none;
-      }
-      > label {
-        width: 100%;
-        float: left;
-        text-align: center;
-      }
-      select {
-        width: 100%;
-        float: left;
-        text-align: center;
-        margin: 2% 0 0 0;
-        background: $background-colour;
-        border: none;
-        > option {
-          height: 1.5em;
-          font-size: 1.4em;
-          font-family: $head-font-family;
-        }
-      }
+  > img.loading {
+    width: 30%;
+    margin: 40% 35%;
+    @media screen and (min-width: 800px) {
+      width: 10%;
+      margin: 20% 45%;
     }
   }
-  ul.toolbar {
-    color: $main-text-colour;
-    width: 100%;
-    float: left;
-    margin: 0;
-    padding: 0;
-    > li {
-      background: $submain-colour;
-      padding: 2% 0;
-      font-size: 18px;
-      float: left;
-      width: 25%;
-      text-align: center;
-      &.two {
-        width: 50%;
-      }
-    }
-  }
+
   form {
+    font-family: $head-font-family;
+    width: 100%;
     float: left;
     overflow: hidden;
     max-height: 0;
@@ -472,13 +333,89 @@ section.content {
       max-height: 0;
       @include transition-handler(max-height, 0.5s, linear);
     }
-
-    > input {
+    input {
+      margin: 2% 0;
       float: left;
-
+      width: 98%;
+      height: 30px;
+      box-sizing: border-box;
+      @media screen and (min-width: 700px) {
+        width: 98%;
+        margin: 0 0 2% 2%;
+      }
       &.hide {
         display: none;
       }
+    }
+    input[type=submit], span.button {
+      background: $submain-colour;
+      color: $main-text-colour;
+      border: none;
+      width: 100%;
+    }
+    span.button {
+      text-align: center;
+      float: left;
+      > input[type=file] {
+        width: 25%;
+      }
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      float: left;
+      border: none;
+      font-family: $head-font-family;
+      @media screen and (min-width: 800px) {
+        width: 98%;
+        margin: 0 0 2% 2%;
+        box-sizing: border-box;
+        border: inherit;
+      }
+    }
+    label {
+      width: 100%;
+      float: left;
+      text-align: center;
+    }
+    select {
+      width: 100%;
+      float: left;
+      text-align: center;
+      margin: 2% 0 0 0;
+      background: $background-colour;
+      border: none;
+      > option {
+        height: 1.5em;
+        font-size: 1.4em;
+        font-family: $head-font-family;
+      }
+    }
+    div.flow {
+      margin: 0 0 2% 0;
+      float: left;
+      width: 100%;
+    }
+  }
+
+  ul.toolbar {
+    color: $main-text-colour;
+    width: 100%;
+    float: left;
+    margin: 0;
+    padding: 0;
+    > li {
+      background: $submain-colour;
+      cursor: pointer;
+      padding: 2% 0;
+      font-size: 18px;
+      float: left;
+      width: 25%;
+      text-align: center;
+      &.two {
+        width: 50%;
+      }
+      > div > span > input {width: 25%;}
     }
   }
 
@@ -497,13 +434,48 @@ section.content {
     font-family: $head-font-family;
     list-style-type: none;
   }
+  div.left-content{
+    width: 40%;
+    float: left;
+  }
+  div.right-content {
+    width: 60%;
+    float: left;
+    h2, h3, p {
+      color: $main-colour;
+      @media screen and (max-width: 600px) {color: $main-text-colour;}
+    }
+    section.description {
+      color: $backup-text-colour;
+    }
+  }
+  div.galleryImgWrapper {
+    @include add-box-sizing;
+    border:2px solid $main-colour;
+    width: 25%;
+    float: left;
+  }
+  div.imgWrapper {
+    width: 100%;
+    display: block;
+    height: 0;
+    padding-bottom: 56.25%;
+    overflow: hidden;
+    @include add-box-sizing;
+    border-bottom: 1px solid $submain-colour;
+    > img {
+      width: 100%;
+    }
+    @media screen and (min-width: 700px) {
+      border-bottom: none;
+    }
+  }
 
   > section.about {
     float: left;
     @media screen and (min-width: 1000px) {
       float: left;
-      max-width: 600px;
-      width: 40%;
+      width: 100%;
     }
     @media screen and (max-width: 1000px) {
       width: 90%;
@@ -515,7 +487,26 @@ section.content {
       padding: 0;
       margin: 0;
     }
-    > p {
+    > img {
+      width: 35%;
+      @media screen and (max-width: 600px) {  width: 100%;  }
+      border: 5px solid $main-colour;
+      float: left;
+      margin: 1.25% 0;
+    }
+    > div.right {
+      @media screen and (max-width: 1110px) {
+        padding: 0 1%;
+        @include add-box-sizing;
+      }
+      width: 60%;
+      padding: 0 2%;
+      @media screen and (max-width: 600px) {
+        width: 100%;
+      }
+      float: left;
+    }
+    > div.right > p {
       font-family: $sub-font-family;
       font-weight: 200;
       color: $extra-text-colour;
@@ -610,12 +601,18 @@ section.content.projects, section.content.work-experience {
     float: left;
 
     > li {
-      width: 99%;
+      width: 100%;
       float: left;
+      @include add-box-sizing;
       background: $main-colour;
       color: $main-text-colour;
       border: 2px solid $submain-colour;
       margin-bottom: 1%;
+
+      @media screen and (min-width: 700px) {
+        background: none;
+        border: none;
+      }
       &:first-of-type {
         margin-top: 2%;
       }
@@ -662,33 +659,12 @@ section.content.projects, section.content.work-experience {
           }
         }
       }
-      div.imgWrapper {
-        width: 100%;
-        display: block;
-        height: 0;
-        padding-bottom: 56.25%;
-        overflow: hidden;
-        border-bottom: 1px solid $submain-colour;
-        > img {
-          width: 100%;
-        }
-      }
+
       h2 {
         width: 100%;
         float: left;
         margin: 0 2%;
         padding: 2% 0;
-      }
-      span.triangle {
-        position: relative;
-        float: left;
-        margin: -5.5% 0 0 0;
-        width: 0;
-        height: 0;
-        left: 45%;
-        border-left: 20px solid transparent;
-        border-right: 20px solid transparent;
-        border-bottom: 20px solid $main-colour;
       }
       section.description, section.moreInfo {
         width: 96%;
@@ -696,33 +672,63 @@ section.content.projects, section.content.work-experience {
         text-align: left;
         margin: 0 2%;
         padding: 2% 0;
-
+        @media screen and (min-width: 700px) {
+          color: $main-colour;
+        }
         // these below styles are for final html textarea formatting
         > h1 {
-
+          color: $main-colour;
+          @media screen and (max-width: 600px) {
+            color: $main-text-colour;
+          }
         }
         > h2 {
-
+          color: $main-colour;
+          @media screen and (max-width: 600px) {
+            color: $main-text-colour;
+          }
         }
         > h3 {
-
+          color: $main-colour;
+          @media screen and (max-width: 600px) {
+            color: $main-text-colour;
+          }
         }
         > h4 {
-
+          color: $main-colour;
+          @media screen and (max-width: 600px) {
+            color: $main-text-colour;
+          }
         }
         > h5 {
-
+          color: $main-colour;
+          @media screen and (max-width: 600px) {
+            color: $main-text-colour;
+          }
         }
         > p {
-
+          color: $main-colour;
+          @media screen and (max-width: 600px) {
+            color: $main-text-colour;
+          }
         }
         > ul {
+          list-style-type: disc;
+          float: left;
+          margin: 0 0 2% 2%;
          > li {
-
+           color: $main-colour;
+           @media screen and (max-width: 600px) {
+             color: $main-text-colour;
+           }
          }
         }
         > code {
-
+          color: $main-colour;
+          float: left;
+          @media screen and (max-width: 600px) {
+            color: $main-text-colour;
+          }
         }
       }
       form {
@@ -733,18 +739,73 @@ section.content.projects, section.content.work-experience {
     }
   }
 }
+section.content.work-experience {
+  width: 100%;
+  float: left;
+  margin: 0 0 0 0;
+
+  > section.clients, > section.past-employers {
+    width: 100%;
+    float: left;
+    > h2 {
+      color: $main-colour;
+      font-family: $head-font-family;
+      font-size: $h2;
+      margin: 2% 0 -1% 0;
+    }
+  }
+  @media screen and (min-width: 700px) {
+    > section.clients {
+      > ul {
+        > li {
+          width: 25%;
+          margin-top: 2%;
+          @include add-box-sizing;
+          border:2px solid $main-colour;
+          > div.imgWrapper > img {
+            @include handle-translateY-transformation(-8%);
+          }
+        }
+      }
+    }
+  }
+  > form {
+    margin-top: 3%;
+  }
+  h3 {
+    margin: 0 2%;
+  }
+  div.upload {
+    float: left;
+    display: inline-block;
+    width: 100%;
+  }
+}
 section.content.contact {
-  margin: 0 2%;
+
+  @media screen and (max-width: 700px) {
+    margin: 0 2%;
+  }
+  @media screen and (min-width: 800px) {
+    width: 100%;
+    margin: 0;
+  }
   > ul {
     list-style-type: none;
     float: left;
     width: 100%;
     padding: 0;
     margin: 0;
+
+    @media screen and (min-width: 800px) {
+      width: 40%;
+      margin: 4% 31%;
+    }
     > li {
       margin: 2% 0;
       width: 100%;
       float: left;
+
       > a {
         font-size: $h3;
         text-decoration: none;
@@ -763,6 +824,14 @@ section.content.contact {
             margin: 0 5% 0 0;
             color: $main-text-colour;
             font-size: $h2-large;
+            @media screen and (min-width: 600px) {
+               width: 36px;
+               height: 32px;
+               font-size: $h3;
+               padding-left: 0;
+               padding-top: 5px;
+               margin: 2% 5% 0 0;
+            }
           }
         }
       }
@@ -772,30 +841,9 @@ section.content.contact {
         background: nth($colours, $i)
       }
     }
-  }
-}
-section.content.work-experience {
-  width: 100%;
-  float: left;
-  margin: 0 0 0 0;
-
-  > section.clients, > section.past-employers {
-    > h2 {
-      color: $main-colour;
-      font-family: $head-font-family;
-      font-size: $h2;
-      margin: 2% 0 -1% 0;
+    > li > a:hover > span.icon {
+      background: $main-colour;
+      @include transition-handler(background, 0.25s, linear);
     }
-  }
-  > form {
-    margin-top: 3%;
-  }
-  h3 {
-    margin: 0 2%;
-  }
-  div.upload {
-    float: left;
-    display: inline-block;
-    width: 100%;
   }
 }

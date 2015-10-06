@@ -32,15 +32,14 @@ class Projlet extends Model
     protected static function boot() {
         parent::boot();
 
-        static::deleting(function($project) { // before delete() method call this
+        static::deleting(function($projlet) { // before delete() method call this
             $image = new Image();
             $image
                 ->where('parentSection', '=', 'project')
-                ->where('parentId', '=', $client->id)->first();
+                ->where('parentId', '=', $projlet->id)->first();
             if ($image) {
                 $fileService = new ApiFileService($image->parentSection, $image->parentId);
                 $fileService->handleImageDelete($image->id);
-                $image->delete();
             }
             $project->skillTags()->delete();
         });

@@ -37,11 +37,10 @@ class Project extends Model
             $image = new Image();
             $image
                 ->where('parentSection', '=', 'project')
-                ->where('parentId', '=', $client->id)->first();
+                ->where('parentId', '=', $project->id)->first();
             if ($image) {
                 $fileService = new ApiFileService($image->parentSection, $image->parentId);
                 $fileService->handleImageDelete($image->id);
-                $image->delete();
             }
             $project->skillTags()->delete();
         });

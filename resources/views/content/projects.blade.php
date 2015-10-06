@@ -20,6 +20,9 @@
             <label for="moreInfo">More Information</label>
             <textarea data-ng-model="projectData.moreInfo" name="moreInfo"></textarea>
             @endif
+            <select multiple="" data-ng-model="newProjectData.skillTags" name="skillTags">
+                <option data-ng-repeat="skill in skills" data-ng-value="skill.id" data-ng-bind="skill.name"></option>
+            </select>
             <input type="submit" value="Save"/>
         </form>
     @endif
@@ -29,7 +32,7 @@
                 <form name="updateProjectForm" class="active" data-ng-submit="update($index, updateProjectForm, this)">
                     <ul class="toolbar">
                         <li tooltip="change image">
-                            <div flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[0].id) ? '/' + project.images[0].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
+                            <div class="flow" flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[0].id) ? '/' + project.images[0].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
                                  test-chunks="false"
                                  flow-files-submitted="$flow.upload()"
                                  flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 0)">
@@ -53,7 +56,7 @@
                         </textarea>
                         <ul class="toolbar">
                             <li class="two" tooltip="change image">
-                                <div flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[1].id) ? '/' + project.images[1].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
+                                <div class="flow" flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[1].id) ? '/' + project.images[1].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
                                      test-chunks="false"
                                      flow-files-submitted="$flow.upload()"
                                      flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 1)">
@@ -82,6 +85,7 @@
                     <input data-ng-show="editProjectSelected" type="submit" value="Update"/>
                 </form>
             @else
+                @if ($agent->isMobile())
                 <div class="imgWrapper" data-ng-if="project.images[0]">
                     <img data-ng-src="@{{ project.images[0].folderLocation + project.images[0].fileName }}" alt=""/>
                 </div>
@@ -100,6 +104,27 @@
                         <li data-ng-repeat="skillTag in project.skillTags" data-ng-bind="skillTag.skill.name"></li>
                     </ul>
                 </section>
+                @else
+                <div class="left-content">
+                    <div class="imgWrapper" data-ng-if="project.images[0]">
+                        <img data-ng-src="@{{ project.images[0].folderLocation + project.images[0].fileName }}" alt=""/>
+                    </div>
+                </div>
+                <div class="right-content">
+                    <h2 data-ng-bind="project.title"></h2>
+                    <section class="description" data-ng-bind-html="project.description"></section>
+                    <div class="imgWrapper" data-ng-if="project.images[1]">
+                        <img data-ng-src="@{{ project.images[1].folderLocation + project.images[1].fileName }}" alt=""/>
+                    </div>
+                    @if ($pageType != 'projlets')
+                        <section class="moreInfo" data-ng-bind-html="project.moreInfo"></section>
+                    @endif
+                    <h3 data-ng-if="project.skillTags.length>0">Technologies Used:</h3>
+                    <ul class="skills" data-ng-if="project.skillTags.length>0">
+                        <li data-ng-repeat="skillTag in project.skillTags" data-ng-bind="skillTag.skill.name"></li>
+                    </ul>
+                </div>
+                @endif
             @endif
         </li>
     </ul>
