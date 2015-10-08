@@ -27,21 +27,22 @@
         </form>
     @endif
     <ul data-ng-init="category='{{ $pageType }}'">
-        <li data-ng-repeat="project in projects">
+        <li data-ng-repeat="project in projects" {{ ($agent->isMobile()) ? 'class=mobile' : '' }}>
             @if(Auth::check())
                 <form name="updateProjectForm" class="active" data-ng-submit="update($index, updateProjectForm, this)">
+                @if ($agent->isMobile())
                     <ul class="toolbar">
-                        <li tooltip="change image">
+                        <li title="change image">
                             <div class="flow" flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[0].id) ? '/' + project.images[0].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
                                  test-chunks="false"
                                  flow-files-submitted="$flow.upload()"
                                  flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 0)">
-                                <span flow-btn tooltip="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
                             </div>
                         </li>
-                        <li data-ng-click="deleteImage(project.images[0].id, $index, 0)" tooltip="Delete Image">&#8998;&nbsp;&nbsp;I</li>
-                        <li data-ng-click="editProjectSelected=!editProjectSelected" tooltip="edit">&#9998;&nbsp;&nbsp;P</li>
-                        <li data-ng-click="delete($index, project.id)" tooltip="delete">&#9003;&nbsp;&nbsp;P</li>
+                        <li data-ng-click="deleteImage(project.images[0].id, $index, 0)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                        <li data-ng-click="editProjectSelected=!editProjectSelected" title="edit">&#9998;&nbsp;&nbsp;P</li>
+                        <li data-ng-click="delete($index, project.id)" title="delete">&#9003;&nbsp;&nbsp;P</li>
                     </ul>
                     <div class="imgWrapper">
                         <img data-ng-if="$flow.files[0]" flow-img="$flow.files[0]" />
@@ -55,15 +56,15 @@
                         <textarea name="description" data-ng-model="this.project.description" data-ng-show="editProjectSelected">
                         </textarea>
                         <ul class="toolbar">
-                            <li class="two" tooltip="change image">
+                            <li class="two" title="change image">
                                 <div class="flow" flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[1].id) ? '/' + project.images[1].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
                                      test-chunks="false"
                                      flow-files-submitted="$flow.upload()"
                                      flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 1)">
-                                    <span flow-btn tooltip="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                    <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
                                 </div>
                             </li>
-                            <li class="two" data-ng-click="deleteImage(project.images[1].id, $index, 1)" tooltip="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                            <li class="two" data-ng-click="deleteImage(project.images[1].id, $index, 1)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
                         </ul>
                         <div class="imgWrapper">
                             <img data-ng-if="$flow.files[1]" flow-img="$flow.files[1]" />
@@ -83,6 +84,70 @@
                         </select>
                     </section>
                     <input data-ng-show="editProjectSelected" type="submit" value="Update"/>
+                    @else
+                    <section class="line">
+                        <div class="left-content">
+                            <ul class="toolbar">
+                                <li title="change image">
+                                    <div class="flow" flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[0].id) ? '/' + project.images[0].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
+                                         test-chunks="false"
+                                         flow-files-submitted="$flow.upload()"
+                                         flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 0)">
+                                        <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                    </div>
+                                </li>
+                                <li data-ng-click="deleteImage(project.images[0].id, $index, 0)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                                <li data-ng-click="editProjectSelected=!editProjectSelected" title="edit">&#9998;&nbsp;&nbsp;P</li>
+                                <li data-ng-click="delete($index, project.id)" title="delete">&#9003;&nbsp;&nbsp;P</li>
+                            </ul>
+                            <div class="imgWrapper">
+                                <img data-ng-if="$flow.files[0]" flow-img="$flow.files[0]" />
+                                <img data-ng-if="project.images[0]" data-ng-src="@{{ project.images[0].folderLocation + project.images[0].fileName }}" alt=""/>
+                            </div>
+                        </div>
+                        <div class="right-content">
+                            <h2 data-ng-hide="editProjectSelected" data-ng-bind="project.title"></h2>
+                            <input type="text" data-ng-model="this.project.title" placeholder="title..." data-ng-show="editProjectSelected"/>
+                            <section class="description" data-ng-hide="editProjectSelected" data-ng-bind-html="project.description"></section>
+                            <textarea name="description" data-ng-model="this.project.description" data-ng-show="editProjectSelected"></textarea>
+                        </div>
+                    </section>
+                    <span class="read-more-icon desktop" data-ng-click="readMoreSelected=!readMoreSelected" title="Read More">&DownArrowUpArrow;</span>
+                    <section class="read-more" data-ng-class="(readMoreSelected) ? 'active' : 'disabled'">
+                        <div class="right-content">
+                            @if ($pageType != 'projlets')
+                                <section class="moreInfo" data-ng-bind-html="project.moreInfo" data-ng-hide="editProjectSelected"></section>
+                                <textarea name="moreInfo" data-ng-model="this.project.moreInfo"
+                                          data-ng-show="editProjectSelected"></textarea>
+                            @endif
+                            <h3 data-ng-if="project.skillTags.length>0">Technologies Used:</h3>
+                            <ul class="skills" data-ng-if="project.skillTags.length>0" data-ng-hide="editProjectSelected">
+                                <li data-ng-repeat="skillTag in project.skillTags" data-ng-bind="skillTag.skill.name"></li>
+                            </ul>
+                            <select multiple="multiple" data-ng-model="this.project.skillTags" name="skillTags"
+                                    data-ng-options="skill.name for skill in skills track by skill.skillId" data-ng-show="editProjectSelected">
+                            </select>
+                            <input data-ng-show="editProjectSelected" type="submit" value="Update"/>
+                        </div>
+                        <div class="left-content">
+                            <ul class="toolbar">
+                                <li class="two" title="change image">
+                                    <div class="flow" flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/{{ str_singular($pageType) }}/images/' + project.id + ((project.images[1].id) ? '/' + project.images[1].id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
+                                         test-chunks="false"
+                                         flow-files-submitted="$flow.upload()"
+                                         flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 1)">
+                                        <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                    </div>
+                                </li>
+                                <li class="two" data-ng-click="deleteImage(project.images[1].id, $index, 1)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                            </ul>
+                            <div class="imgWrapper">
+                                <img data-ng-if="$flow.files[1]" flow-img="$flow.files[1]" />
+                                <img data-ng-if="project.images[1]" data-ng-src="@{{ project.images[1].folderLocation + project.images[1].fileName }}" alt=""/>
+                            </div>
+                        </div>
+                    </section>
+                @endif
                 </form>
             @else
                 @if ($agent->isMobile())
@@ -105,25 +170,34 @@
                     </ul>
                 </section>
                 @else
-                <div class="left-content">
-                    <div class="imgWrapper" data-ng-if="project.images[0]">
-                        <img data-ng-src="@{{ project.images[0].folderLocation + project.images[0].fileName }}" alt=""/>
+                <section class="line">
+                    <div class="left-content">
+                        <div class="imgWrapper" data-ng-if="project.images[0]">
+                            <img data-ng-src="@{{ project.images[0].folderLocation + project.images[0].fileName }}" alt=""/>
+                        </div>
                     </div>
-                </div>
-                <div class="right-content">
-                    <h2 data-ng-bind="project.title"></h2>
-                    <section class="description" data-ng-bind-html="project.description"></section>
-                    <div class="imgWrapper" data-ng-if="project.images[1]">
-                        <img data-ng-src="@{{ project.images[1].folderLocation + project.images[1].fileName }}" alt=""/>
+                    <div class="right-content">
+                        <h2 data-ng-bind="project.title"></h2>
+                        <section class="description" data-ng-bind-html="project.description"></section>
                     </div>
-                    @if ($pageType != 'projlets')
-                        <section class="moreInfo" data-ng-bind-html="project.moreInfo"></section>
-                    @endif
-                    <h3 data-ng-if="project.skillTags.length>0">Technologies Used:</h3>
-                    <ul class="skills" data-ng-if="project.skillTags.length>0">
-                        <li data-ng-repeat="skillTag in project.skillTags" data-ng-bind="skillTag.skill.name"></li>
-                    </ul>
-                </div>
+                </section>
+                <span class="read-more-icon desktop" data-ng-click="readMoreSelected=!readMoreSelected" title="Read More">&DownArrowUpArrow;</span>
+                <section class="read-more" data-ng-class="(readMoreSelected) ? 'active' : 'disabled'">
+                    <div class="right-content">
+                        @if ($pageType != 'projlets')
+                            <section class="moreInfo" data-ng-bind-html="project.moreInfo"></section>
+                        @endif
+                        <h3 data-ng-if="project.skillTags.length>0">Technologies Used:</h3>
+                        <ul class="skills" data-ng-if="project.skillTags.length>0">
+                            <li data-ng-repeat="skillTag in project.skillTags" data-ng-bind="skillTag.skill.name"></li>
+                        </ul>
+                    </div>
+                    <div class="left-content">
+                        <div class="imgWrapper" data-ng-if="project.images[1]">
+                            <img data-ng-src="@{{ project.images[1].folderLocation + project.images[1].fileName }}" alt=""/>
+                        </div>
+                    </div>
+                </section>
                 @endif
             @endif
         </li>

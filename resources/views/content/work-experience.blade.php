@@ -42,17 +42,17 @@
                     <form class="active" name="updatePreviousEmployer" data-ng-submit="workExperience.update($index, updatePreviousEmployer, this)">
                         @if ($agent->isMobile())
                             <ul class="toolbar">
-                                <li tooltip="change image">
+                                <li title="change image">
                                     <div flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/workExperience/images/' + employer.id + ((employer.image.id) ? '/' + employer.image.id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
                                          test-chunks="false"
                                          flow-files-submitted="$flow.upload()"
                                          flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 0)">
-                                        <span flow-btn tooltip="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                        <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
                                     </div>
                                 </li>
-                                <li data-ng-click="workExperience.remove(this, employer.image.id, employer.id)" tooltip="Delete Image">&#8998;&nbsp;&nbsp;I</li>
-                                <li data-ng-click="editWorkExperienceSelected=!editWorkExperienceSelected" tooltip="edit">&#9998;&nbsp;&nbsp;E</li>
-                                <li data-ng-click="workExperience.remove(this, employer.id)" tooltip="delete">&#9003;&nbsp;&nbsp;E</li>
+                                <li data-ng-click="workExperience.remove(this, employer.image.id, employer.id)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                                <li data-ng-click="editWorkExperienceSelected=!editWorkExperienceSelected" title="edit">&#9998;&nbsp;&nbsp;E</li>
+                                <li data-ng-click="workExperience.remove(this, employer.id)" title="delete">&#9003;&nbsp;&nbsp;E</li>
                             </ul>
                             <div class="imgWrapper">
                                 <img data-ng-if="$flow.files[0]" flow-img="$flow.files[0]" />
@@ -79,17 +79,17 @@
                             @else
                             <div class="left-content">
                                 <ul class="toolbar">
-                                    <li tooltip="change image">
+                                    <li title="change image">
                                         <div flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},target: '/api/workExperience/images/' + employer.id + ((employer.image.id) ? '/' + employer.image.id : ''), permanentErrors: [415, 500, 501], testChunks:false}"
                                              test-chunks="false"
                                              flow-files-submitted="$flow.upload()"
                                              flow-file-success="uploader.handleImageCallback($flow, $file, $message, $index, 0)">
-                                            <span flow-btn tooltip="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                            <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
                                         </div>
                                     </li>
-                                    <li data-ng-click="workExperience.remove(this, employer.image.id, employer.id)" tooltip="Delete Image">&#8998;&nbsp;&nbsp;I</li>
-                                    <li data-ng-click="editWorkExperienceSelected=!editWorkExperienceSelected" tooltip="edit">&#9998;&nbsp;&nbsp;E</li>
-                                    <li data-ng-click="workExperience.remove(this, employer.id)" tooltip="delete">&#9003;&nbsp;&nbsp;E</li>
+                                    <li data-ng-click="workExperience.remove(this, employer.image.id, employer.id)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                                    <li data-ng-click="editWorkExperienceSelected=!editWorkExperienceSelected" title="edit">&#9998;&nbsp;&nbsp;E</li>
+                                    <li data-ng-click="workExperience.remove(this, employer.id)" title="delete">&#9003;&nbsp;&nbsp;E</li>
                                 </ul>
                                 <div class="imgWrapper">
                                     <img data-ng-if="$flow.files[0]" flow-img="$flow.files[0]" />
@@ -120,7 +120,7 @@
                     </form>
                 </li>
                 @else
-                <li data-ng-repeat="employer in previousExperience">
+                <li data-ng-repeat="employer in previousExperience" {{ ($agent->isMobile()) ? 'class=mobile' : '' }}>
                     @if ($agent->isMobile())
                         <div class="imgWrapper">
                             <img data-ng-src="@{{ employer.image.folderLocation + employer.image.fileName }}" alt=""/>
@@ -166,7 +166,7 @@
                     <li data-ng-repeat="company in clients">
                         <form name="updateClientForm" class="active" data-ng-submit="client.update($index, updateClientForm, this)">
                             <ul class="toolbar">
-                                <li tooltip="change image">
+                                <li title="change image">
                                     <div flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
                                             target: '/api/{{ str_singular($pageType) }}/images/' + company.id + ((company.image.id) ? '/' + company.image.id : ''),
                                             permanentErrors: [415, 500, 501],
@@ -174,12 +174,12 @@
                                          test-chunks="false"
                                          flow-files-submitted="$flow.upload()"
                                          flow-file-success="uploader.successCallback($flow, $file, $message, $index, 0)">
-                                        <span flow-btn tooltip="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                        <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
                                     </div>
                                 </li>
-                                <li data-ng-click="client.remove(this, company.image.id, company.id)" tooltip="Delete Image">&#8998;&nbsp;&nbsp;I</li>
-                                <li data-ng-click="editClientFormSelected=!editClientFormSelected" tooltip="edit">&#9998;&nbsp;&nbsp;P</li>
-                                <li data-ng-click="client.remove(this, company.id)" tooltip="delete">&#9003;&nbsp;&nbsp;P</li>
+                                <li data-ng-click="client.remove(this, company.image.id, company.id)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                                <li data-ng-click="editClientFormSelected=!editClientFormSelected" title="edit">&#9998;&nbsp;&nbsp;P</li>
+                                <li data-ng-click="client.remove(this, company.id)" title="delete">&#9003;&nbsp;&nbsp;P</li>
                             </ul>
                             <div class="imgWrapper">
                                 <img data-ng-hide="$flow.files[0]" data-ng-src="@{{ company.image.folderLocation + company.image.fileName }}"
@@ -194,7 +194,7 @@
                     <li data-ng-repeat="company in clients">
                         <form name="updateClientForm" class="active" data-ng-submit="client.update($index, updateClientForm, this)">
                             <ul class="toolbar">
-                                <li tooltip="change image">
+                                <li title="change image">
                                     <div flow-init="{headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
                                         target: '/api/{{ str_singular($pageType) }}/images/' + company.id + ((company.image.id) ? '/' + company.image.id : ''),
                                         permanentErrors: [415, 500, 501],
@@ -202,12 +202,12 @@
                                          test-chunks="false"
                                          flow-files-submitted="$flow.upload()"
                                          flow-file-success="uploader.successCallback($flow, $file, $message, $index, 0)">
-                                        <span flow-btn tooltip="Change Image">&plus;&nbsp;&nbsp;I</span>
+                                        <span flow-btn title="Change Image">&plus;&nbsp;&nbsp;I</span>
                                     </div>
                                 </li>
-                                <li data-ng-click="client.remove(this, company.image.id, company.id)" tooltip="Delete Image">&#8998;&nbsp;&nbsp;I</li>
-                                <li data-ng-click="editClientFormSelected=!editClientFormSelected" tooltip="edit">&#9998;&nbsp;&nbsp;P</li>
-                                <li data-ng-click="client.remove(this, company.id)" tooltip="delete">&#9003;&nbsp;&nbsp;P</li>
+                                <li data-ng-click="client.remove(this, company.image.id, company.id)" title="Delete Image">&#8998;&nbsp;&nbsp;I</li>
+                                <li data-ng-click="editClientFormSelected=!editClientFormSelected" title="edit">&#9998;&nbsp;&nbsp;P</li>
+                                <li data-ng-click="client.remove(this, company.id)" title="delete">&#9003;&nbsp;&nbsp;P</li>
                             </ul>
                             <div class="imgWrapper">
                                 <img data-ng-hide="$flow.files[0]" data-ng-src="@{{ company.image.folderLocation + company.image.fileName }}"

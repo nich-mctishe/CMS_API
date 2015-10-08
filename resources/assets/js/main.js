@@ -1,5 +1,5 @@
 var portfolio = angular.module('portfolio', ['ui.router', 'ngSanitize', 'flow']);
-var baseUrl = 'http://localhost/';
+var baseUrl = location.protocol + '//' + location.host + '/';
 portfolio.config(['flowFactoryProvider', function (flowFactoryProvider) {
 
     var targetUrl = 1; // default value

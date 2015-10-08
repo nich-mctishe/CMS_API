@@ -3,5 +3,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-flow/2.6.1/ng-flow-standalone.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
 <script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
-<script src="/js/application.js"></script>
+<script src="/js/application.min.js"></script>
 

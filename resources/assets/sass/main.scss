@@ -230,22 +230,32 @@ nav {
       margin: 0 5%;
       padding: 0;
       float: left;
+      @media screen and (min-width: 750px) and (max-width: 900px) {
+        width:98%;
+        margin: 0 1%;
+      }
+      @media screen and (min-width: 590px) and (max-width: 749px) {
+        width:99.6%;
+        margin: 0 0.2%;
+      }
 
       > li {
         float: left;
         font-family: $head-font-family;
         color: $main-colour;
         font-size: $h3;
-        @media screen and (max-width: 1350px) {margin: 0 0 0 6%;}
-        @media screen and (max-width: 1230px) {margin: 0 0 0 5%;}
-        @media screen and (max-width: 1115px) {margin: 0 0 0 4%;}
-        @media screen and (max-width: 1025px) {margin: 0 0 0 3%;}
-        @media screen and (max-width: 950px) {margin: 0 0 0 2%;}
-        @media screen and (max-width: 885px) {margin: 0 0 0 1%;}
-
         margin: 0 0 0 7%;
+        @media screen and (max-width: 1350px) { margin: 0 0 0 6%; }
+        @media screen and (max-width: 1230px) { margin: 0 0 0 5%; }
+        @media screen and (max-width: 1115px) { margin: 0 0 0 4%; }
+        @media screen and (max-width: 1025px) { margin: 0 0 0 3%; }
+        @media screen and (max-width: 950px) { margin: 0 0 0 2%; }
+        @media screen and (max-width: 885px) { margin: 0 0 0 1%; }
         &:first-of-type {
           margin: 0;
+          @media screen and (min-width: 590px) and (max-width: 749px) {
+            margin: 0 0 0 0.1%;
+          }
         }
         > div.circle {
           float: left;
@@ -253,6 +263,10 @@ nav {
           height: 100px;
           border: none;
           border-radius: 50px;
+          @media screen and (max-width: 650px) {
+            width: 80px;
+            height: 80px;
+          }
 
           > a {
             display: block;
@@ -261,8 +275,10 @@ nav {
             text-align: center;
             vertical-align: middle;
             padding: 35% 0;
+            @media screen and (min-width: 590px) and (max-width: 749px) { padding: 34% 0; }
             &.double-line {
               padding: 26% 0;
+              @media screen and (min-width: 590px) and (max-width: 749px) {  padding: 19% 0;  }
             }
           }
         }
@@ -303,8 +319,8 @@ section.content {
   float: left;
   width: 90%;
   margin: 0 5%;
-  @media screen and (max-width: 700px) {
-    margin: 16% 0 0 5%;
+  &.mobile {
+    margin: 16% 5% 0 5%;
   }
   h2, h3, p, a {
     font-weight: 200;
@@ -415,6 +431,7 @@ section.content {
       &.two {
         width: 50%;
       }
+      > div { margin: 0; }
       > div > span > input {width: 25%;}
     }
   }
@@ -461,52 +478,33 @@ section.content {
     height: 0;
     padding-bottom: 56.25%;
     overflow: hidden;
+    background: $background-colour;
     @include add-box-sizing;
     border-bottom: 1px solid $submain-colour;
     > img {
       width: 100%;
+      //margin: -5% 0 0 0;
     }
-    @media screen and (min-width: 700px) {
+    @media screen and (min-width: 600px) {
       border-bottom: none;
     }
   }
 
   > section.about {
     float: left;
-    @media screen and (min-width: 1000px) {
-      float: left;
+    @media screen and (max-width: 1001px) {
       width: 100%;
-    }
-    @media screen and (max-width: 1000px) {
-      width: 90%;
-      padding: 0;
-      margin: 2% 5%;
-    }
-    @media screen and (max-width: 600px) {
-      width: 96%;
-      padding: 0;
-      margin: 0;
     }
     > img {
       width: 35%;
-      @media screen and (max-width: 600px) {  width: 100%;  }
       border: 5px solid $main-colour;
       float: left;
-      margin: 1.25% 0;
+      margin: 3.25% 2% 1.25% 0;
+      @include add-box-sizing;
+      @media screen and (max-width: 450px) {  width: 100%; margin-bottom: 4%;  }
+      @media screen and (min-width: 601px) {  margin: 1.25% 2% 1.25% 0;  }
     }
-    > div.right {
-      @media screen and (max-width: 1110px) {
-        padding: 0 1%;
-        @include add-box-sizing;
-      }
-      width: 60%;
-      padding: 0 2%;
-      @media screen and (max-width: 600px) {
-        width: 100%;
-      }
-      float: left;
-    }
-    > div.right > p {
+    > p {
       font-family: $sub-font-family;
       font-weight: 200;
       color: $extra-text-colour;
@@ -523,6 +521,18 @@ section.content.skills {
     padding: 0;
     width: 100%;
     float: left;
+    @media screen and (min-width: 600px) and (max-width: 799px) {
+      width: 48%;
+      margin: 2% 0 2% 2%;
+    }
+    @media screen and (min-width: 800px) and (max-width: 1250px) {
+      width: 31%;
+      margin: 2% 0 2% 2%;
+    }
+    @media screen and (min-width: 1251px) {
+      width: 23%;
+      margin: 2% 0 2% 2%;
+    }
     > li {
       color: $extra-text-colour;
       font-size: $h3;
@@ -609,12 +619,20 @@ section.content.projects, section.content.work-experience {
       border: 2px solid $submain-colour;
       margin-bottom: 1%;
 
-      @media screen and (min-width: 700px) {
-        background: none;
-        border: none;
+      @media screen and (min-width: 800px) {
+        &.mobile {
+          width: 49%;
+          margin-left: 2%;
+        }
+        &.mobile:first-of-type {
+          margin-left: 0;
+        }
       }
+      @media screen and (min-width: 601px) { color: $main-colour; }
+      @media screen and (min-width: 700px) { background: none; border: none; }
       &:first-of-type {
         margin-top: 2%;
+        @media screen and (min-width: 601px) { margin-top: 0; }
       }
       .read-more-icon {
         width: 100%;
@@ -623,6 +641,9 @@ section.content.projects, section.content.work-experience {
         font-size: $h2;
         text-align: center;
         padding: 2% 0;
+        cursor: pointer;
+        @media screen and (min-width: 600px) { color: $submain-colour; }
+        &.desktop { color: $submain-colour; }
       }
       section.read-more {
         float: left;
@@ -642,21 +663,28 @@ section.content.projects, section.content.work-experience {
           float: left;
           padding: 1% 0 2% 2%;
           margin: 0;
+          @media screen and (min-width: 600px) { padding: 0 0 2% 0; }
         }
-        > ul.skills {
-          width: 100%;
+      }
+
+      ul.skills {
+        width: 100%;
+        float: left;
+        padding: 0 0 2% 2%;
+        margin: 0;
+        @media screen and (min-width: 600px) { width: 98%; padding: 0; margin-top: -2%; }
+        >li {
           float: left;
-          padding: 0 0 2% 2%;
-          margin: 0;
-          >li {
-            float: left;
-            font-style: italic;
-            text-decoration: underline;
-            padding-left: 1%;
-            &:first-of-type {
-              padding-left: 0;
-            }
+          font-style: italic;
+          text-decoration: underline;
+          padding: 0 1%;
+          border: none;
+          width: auto;
+          margin-top: 0;
+          &:first-of-type {
+            padding-left: 0;
           }
+          @media screen and (min-width: 600px) {  color: $main-colour;  }
         }
       }
 
@@ -665,6 +693,9 @@ section.content.projects, section.content.work-experience {
         float: left;
         margin: 0 2%;
         padding: 2% 0;
+        @media screen and (min-width: 601px) {
+          color: $main-colour;
+        }
       }
       section.description, section.moreInfo {
         width: 96%;
@@ -672,7 +703,7 @@ section.content.projects, section.content.work-experience {
         text-align: left;
         margin: 0 2%;
         padding: 2% 0;
-        @media screen and (min-width: 700px) {
+        @media screen and (min-width: 601px) {
           color: $main-colour;
         }
         // these below styles are for final html textarea formatting
@@ -718,8 +749,11 @@ section.content.projects, section.content.work-experience {
           margin: 0 0 2% 2%;
          > li {
            color: $main-colour;
+           border: none;
+           width: 80%;
            @media screen and (max-width: 600px) {
              color: $main-text-colour;
+             margin: 0 0 2% 4%;
            }
          }
         }
@@ -729,6 +763,12 @@ section.content.projects, section.content.work-experience {
           @media screen and (max-width: 600px) {
             color: $main-text-colour;
           }
+        }
+      }
+      section.moreInfo {
+        @media screen and (min-width: 600px) {
+          width: 98%;
+          margin: 0 2% 4% 0;
         }
       }
       form {
@@ -753,22 +793,27 @@ section.content.work-experience {
       font-size: $h2;
       margin: 2% 0 -1% 0;
     }
-  }
-  @media screen and (min-width: 700px) {
-    > section.clients {
-      > ul {
-        > li {
-          width: 25%;
-          margin-top: 2%;
-          @include add-box-sizing;
-          border:2px solid $main-colour;
-          > div.imgWrapper > img {
-            @include handle-translateY-transformation(-8%);
-          }
-        }
-      }
+    > ul.clients > li > form > ul.toolbar > li > div > span > input[type=file] {
+      width: 5%;
     }
   }
+
+  > section.clients {
+    > h2 { @media screen and (min-width: 450px) { margin-bottom: 2%; } }
+    > ul {
+      > li {
+        @media screen and (min-width: 450px) {
+          @include add-box-sizing;
+          border:2px solid $main-colour;
+          &:first-of-type { margin-top: 0; }
+        }
+        @media screen and (min-width: 450px) and (max-width: 800px) { width: 50%; }
+        @media screen and (min-width: 801px) and (max-width: 1000px) { width: 33%; }
+        @media screen and (min-width: 1001px) { width: 25%; }
+    }
+  }
+  }
+
   > form {
     margin-top: 3%;
   }

@@ -7,7 +7,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="A portfolio for the interactive developer Nicholas Headlong, specialising in web and app development">
     <link rel="shortcut icon" type="image/gif" href="/assets/systemImages/favicon.gif" >
-    <link rel="stylesheet" href="css/main.css" type="text/css" />
     <title>{{ $title or 'Nicholas Headlong' }}</title>
     @include('externallyLoadedFiles.css')
     <!--[if lt IE 9]>
@@ -21,7 +20,7 @@
 @else
     @include('nav.navDesktop')
 @endif
-<section class="content" data-ui-view>
+<section class="content {{ ($agent->isMobile() && !$agent->isTablet()) ? 'mobile' : '' }}" data-ui-view>
     <img class="loading" src="/assets/systemImages/loading.gif" alt="Loading data..."/>
 </section>
 
