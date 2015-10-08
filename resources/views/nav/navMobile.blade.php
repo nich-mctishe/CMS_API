@@ -12,7 +12,7 @@
             <li><a data-ng-click="menuActive = !menuActive" href="#skills">Skills</a></li>
             <li><a data-ng-click="menuActive = !menuActive" href="#work-experience">Work Experience</a></li>
             <li><a href="http://nichheadlong.tumblr.com/">Blog</a></li>
-            <li><a href="/assets/downloadableContent/nihcolasheadlongCv.pdf">CV</a></li>
+            <li><a href="/assets/downloadableContent/NicholasHeadlongCv§§.pdf">CV</a></li>
             <li><a data-ng-click="menuActive = !menuActive" href="#contact">Contact</a></li>
         </ul>
     </nav>
