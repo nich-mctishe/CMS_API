@@ -56,8 +56,6 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        // in here after initial work will need to be if Auth::check() else return redirect('/');
-
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

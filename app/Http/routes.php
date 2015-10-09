@@ -12,11 +12,18 @@
 */
 
 Route::get('/', 'ViewController@runHome');
-Route::controllers([
-    //register needs to be before auth
-    'auth' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration routes...
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('auth/register', 'Auth\AuthController@getRegister');
+    Route::post('auth/register', 'Auth\AuthController@postRegister');
+});
+
+
 Route::get('home', ['middleware' => 'auth', 'uses' => 'ViewController@redirectToBase']);
 Route::group(['prefix' => 'route-master'], function ()
 {
@@ -36,7 +43,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
 /**
  * this route is purely for development purposes remove before deployment.
  */
-Route::get('csrf', function()
-{
-    return Session::token();
-});
+//Route::get('csrf', function()
+//{
+//    return Session::token();
+//});
