@@ -37,7 +37,7 @@ class ApiFileService {
     public function __construct($parentSection, $parentId)
     {
         $this->directory = $_SERVER['DOCUMENT_ROOT'];
-        $this->location = '/assets/uploadedImages/'.$parentSection.'/';
+        $this->location = 'assets/uploadedImages/'.$parentSection.'/';
         $this->parentId = $parentId;
         $this->parentSection = $parentSection;
     }
