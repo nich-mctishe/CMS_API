@@ -1,0 +1,12 @@
+Model1: #name this the name of model when it comes to validation look-up
+    ValidationRules:
+        - {name: name, criteria: required}
+Image: #these criteria might have to change as they are porbably server generated.
+    ValidationRules:
+        - {name: mimeType, criteria: image}
+Model2:
+    ValidationRules:
+        - {name: title, criteria: required|string}
+        - {name: description, criteria: required|string}
+        - {name: moreInfo, criteria: string}
+        - {name: skillTags, criteria: array}
