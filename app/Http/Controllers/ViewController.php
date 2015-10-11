@@ -38,7 +38,6 @@ class ViewController extends Controller
     public function index($routeSuffix)
     {
         $this->data['pageType'] = $routeSuffix;
-        ($routeSuffix == 'projlets') ? $routeSuffix = 'projects' : $routeSuffix;
 
         return view('content.'.$routeSuffix, $this->data);
     }
@@ -57,7 +56,6 @@ class ViewController extends Controller
         $service = new ApiService();
         $this->data['pageType'] = $routeSuffix;
         $this->data['pageContent'] = $service->read(str_singular($routeSuffix), $articleId);
-        ($routeSuffix == 'projlets') ? $routeSuffix = 'projects' : $routeSuffix;
 
         return view('landingPages.'.$routeSuffix, $this->data);
     }
